@@ -16,6 +16,9 @@ use Zend_Log as Logger;
  */
 class EngineBlock_Profiler
 {
+    const FOREGROUND_COLOR_CODE_RED = '0;31';
+    const FOREGROUND_COLOR_CODE_LIGHT_RED = '1;31';
+
     // @todo make these the same?
     const START_RECORD = 'start';
     const END_RECORD_NAME = '::END::';
@@ -225,12 +228,29 @@ class EngineBlock_Profiler
             $numberFormatted = str_pad($record['number'], 5, ' ', STR_PAD_LEFT);
             $peakMemFormatted = str_pad(round($record['peakmem'] / (1024 * 1024), 2) . 'MB', 20, ' ', STR_PAD_LEFT);
             $memDiffFormatted= str_pad(round($record['memusagediff'] / (1024 * 1024), 2) . 'MB', 20, ' ', STR_PAD_LEFT);
-            $timeFormatted = str_pad($record['milliseconds'] . "ms ({$record['percentage']}%)", 20, ' ', STR_PAD_LEFT);
-            $report .= PHP_EOL . " - Profiler:{$numberFormatted} {$timeFormatted} {$memDiffFormatted}{$peakMemFormatted} - \"{$record['name']}\" ";
+
+            $percentage = $record['percentage'];
+            $timeFormatted = str_pad($record['milliseconds'] . "ms ({$percentage}%)", 20, ' ', STR_PAD_LEFT);
+
+            // @todo make this optional
+            // Show Time consuming blocks in different colors
+            if ($percentage > 40) {
+                $timeFormatted = $this->colorString($timeFormatted, self::FOREGROUND_COLOR_CODE_RED);
+            } elseif ($percentage > 20) {
+                    $timeFormatted = $this->colorString($timeFormatted, self::FOREGROUND_COLOR_CODE_LIGHT_RED);
+            }
+
+            $report .= $row = PHP_EOL . " - Profiler:{$numberFormatted} {$timeFormatted} {$memDiffFormatted}{$peakMemFormatted} - \"{$record['name']}\" ";
         }
 
         return $report;
     }
+
+    private function colorString($string, $colorCode)
+    {
+        return "\033[" . $colorCode . "m" . $string . "\033[0m";
+    }
+
 
     public function logReport() {
         foreach (explode(PHP_EOL, $this->getReport()) as $line) {
