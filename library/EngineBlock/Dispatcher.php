@@ -30,8 +30,7 @@ class EngineBlock_Dispatcher
 
     public function __construct()
     {
-        $profiler = EngineBlock_ApplicationSingleton::getInstance()->getProfiler();
-        $profiler->startBlock('dispatch');
+        EngineBlock_Profiler::getInstance()->startBlock('dispatch');
 
         $this->_addDefaultRouter();
     }

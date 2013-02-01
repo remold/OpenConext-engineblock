@@ -36,6 +36,8 @@ class EngineBlock_Profiler
 
     private $totalQueryCount = 0;
 
+    private static $instance;
+
     public function __construct(Logger $logger)
     {
         $this->logger = $logger;
@@ -46,6 +48,21 @@ class EngineBlock_Profiler
         }
 
         $this->isStarted = false;
+
+        self::$instance = $this;
+    }
+
+    /**
+     * @return EngineBlock_Profiler
+     * @throws Exception
+     */
+    public static function getInstance()
+    {
+        if (empty(self::$instance)) {
+            throw new Exception('Profiler is not yet instantiated');
+        }
+
+        return self::$instance;
     }
 
     public static function markBootstrapStart()

@@ -341,16 +341,15 @@ class EngineBlock_Corto_Adapter
 
     protected function _callCortoServiceUri($serviceName, $idPProviderHash = "")
     {
-        $profiler = EngineBlock_ApplicationSingleton::getInstance()->getProfiler();
-        $profiler->startBlock('init proxy');
+        EngineBlock_Profiler::getInstance()->startBlock('init proxy');
 
         $this->_initProxy();
 
-        $profiler->startBlock('proxy server');
+        EngineBlock_Profiler::getInstance()->startBlock('proxy server');
 
         $this->_proxyServer->serve($serviceName, $idPProviderHash);
 
-        $profiler->startBlock('proxy response');
+        EngineBlock_Profiler::getInstance()->startBlock('proxy response');
 
         $this->_processProxyServerResponse();
 
@@ -363,26 +362,24 @@ class EngineBlock_Corto_Adapter
             return;
         }
 
-        $profiler = EngineBlock_ApplicationSingleton::getInstance()->getProfiler();
-        $profiler->startBlock('get core proxy');
+        EngineBlock_Profiler::getInstance()->startBlock('get core proxy');
 
         $proxyServer = $this->_getCoreProxy();
 
-        $profiler->startBlock('configure proxy');
+        EngineBlock_Profiler::getInstance()->startBlock('configure proxy');
 
         $this->_configureProxyServer($proxyServer);
 
         $this->_proxyServer = $proxyServer;
 
-        $profiler->startBlock('apply rem ent filter');
+        EngineBlock_Profiler::getInstance()->startBlock('apply rem ent filter');
 
         $this->_applyRemoteEntitiesFilters($this->_proxyServer);
     }
 
     protected function _configureProxyServer(EngineBlock_Corto_ProxyServer $proxyServer)
     {
-        $profiler = EngineBlock_ApplicationSingleton::getInstance()->getProfiler();
-        $profiler->startBlock('set Log');
+        EngineBlock_Profiler::getInstance()->startBlock('set Log');
 
         $proxyServer->setSystemLog($this->_getSystemLog());
         $proxyServer->setSessionLogDefault($this->_getSessionLog());
@@ -390,7 +387,7 @@ class EngineBlock_Corto_Adapter
         $application = EngineBlock_ApplicationSingleton::getInstance();
 
 
-        $profiler->startBlock('set configs');
+        EngineBlock_Profiler::getInstance()->startBlock('set configs');
 
         $proxyServer->setConfigs(array(
             'debug' => $application->getConfigurationValue('debug', false),
@@ -416,11 +413,11 @@ class EngineBlock_Corto_Adapter
             'metadataValidUntilSeconds' => 86400, // This sets the time (in seconds) the entity metadata is valid.
         ));
 
-        $profiler->startBlock('get remote entities');
+        EngineBlock_Profiler::getInstance()->startBlock('get remote entities');
 
         $remoteEntities = $this->_getRemoteEntities();
 
-        $profiler->startBlock('decorate remote entities');
+        EngineBlock_Profiler::getInstance()->startBlock('decorate remote entities');
 
         /**
          * Augment our own IdP entry with stuff that can't be set via the Service Registry (yet)
@@ -532,22 +529,22 @@ class EngineBlock_Corto_Adapter
         $proxyServer->setRemoteEntities($remoteEntities);
 
 
-        $profiler->startBlock('set template source');
+        EngineBlock_Profiler::getInstance()->startBlock('set template source');
 
         $proxyServer->setTemplateSource(
             EngineBlock_Corto_ProxyServer::TEMPLATE_SOURCE_FILESYSTEM,
             array('FilePath'=>ENGINEBLOCK_FOLDER_MODULES . 'Authentication/View/Proxy/')
         );
 
-        $profiler->startBlock('set bindings');
+        EngineBlock_Profiler::getInstance()->startBlock('set bindings');
 
         $proxyServer->setBindingsModule(new EngineBlock_Corto_Module_Bindings($proxyServer));
 
-        $profiler->startBlock('set services');
+        EngineBlock_Profiler::getInstance()->startBlock('set services');
 
         $proxyServer->setServicesModule(new EngineBlock_Corto_Module_Services($proxyServer));
 
-        $profiler->startBlock('set vo context');
+        EngineBlock_Profiler::getInstance()->startBlock('set vo context');
 
         if ($this->_voContext!=null) {
             $proxyServer->setVirtualOrganisationContext($this->_voContext);
