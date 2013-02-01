@@ -36,9 +36,16 @@ class Janus_Client
 
     public function getEntity($entityId)
     {
-        return $this->getRestClient()->getEntity()
+        $profiler = EngineBlock_ApplicationSingleton::getInstance()->getProfiler();
+        $profiler->startBlock(__METHOD__);
+
+        $response = $this->getRestClient()->getEntity()
                                         ->entityid($entityId)
                                         ->get();
+
+        $profiler->endBlock();
+        return $response;
+
     }
     
     /**
@@ -48,10 +55,14 @@ class Janus_Client
      */
     public function getMetadata($entityId) 
     {
+        $profiler = EngineBlock_ApplicationSingleton::getInstance()->getProfiler();
+        $profiler->startBlock(__METHOD__);
+
         $response = $this->getRestClient()->getMetadata()
                                            ->entityid($entityId)
                                            ->get();
-        return $response;     
+        $profiler->endBlock();
+        return $response;
     }
     
     /**
@@ -62,10 +73,15 @@ class Janus_Client
      */
     public function getMetaDataForKey($entityId, $key)
     {
+        $profiler = EngineBlock_ApplicationSingleton::getInstance()->getProfiler();
+        $profiler->startBlock(__METHOD__);
+
         $response = $this->getRestClient()->getMetadata()
                                           ->entityid($entityId)
                                           ->keys($key)
-                                          ->get();    
+                                          ->get();
+        $profiler->endBlock();
+
         if (isset($response[$key])) {
             return $response[$key];
         }
@@ -80,10 +96,15 @@ class Janus_Client
      */
     public function getMetaDataForKeys($entityId, $keys)
     {
+        $profiler = EngineBlock_ApplicationSingleton::getInstance()->getProfiler();
+        $profiler->startBlock(__METHOD__);
+
         $response = $this->getRestClient()->getMetadata()
                                            ->entityid($entityId)
                                            ->keys(implode(",", $keys))
                                            ->get();
+        $profiler->endBlock();
+
         return $response;
     }    
     
@@ -97,10 +118,16 @@ class Janus_Client
      */
     public function isConnectionAllowed($spEntityId, $idpEntityId)
     {
+        $profiler = EngineBlock_ApplicationSingleton::getInstance()->getProfiler();
+        $profiler->startBlock(__METHOD__);
+
         $response = $this->getRestClient()->isConnectionAllowed()
                                            ->spentityid($spEntityId)
                                            ->idpentityid($idpEntityId)
                                            ->get();
+
+        $profiler->endBlock();
+
         return ((isset($response[0]) && $response[0]==true) || (isset($response["allowed"]) && $response["allowed"]=="yes"));
     }
 
@@ -113,9 +140,14 @@ class Janus_Client
      */
     public function getAllowedIdps($spEntityId)
     {
+        $profiler = EngineBlock_ApplicationSingleton::getInstance()->getProfiler();
+        $profiler->startBlock(__METHOD__);
+
         $response = $this->getRestClient()->getAllowedIdps()
                                            ->spentityid($spEntityId)
                                            ->get();
+        $profiler->endBlock();
+
         return $response;
     }
 
@@ -128,9 +160,14 @@ class Janus_Client
      */
     public function getAllowedSps($idpEntityId)
     {
+        $profiler = EngineBlock_ApplicationSingleton::getInstance()->getProfiler();
+        $profiler->startBlock(__METHOD__);
+
         $response = $this->getRestClient()->getAllowedSps()
                                            ->idpentityid($idpEntityId)
                                            ->get();
+        $profiler->endBlock();
+
         return $response;
     }
 
@@ -146,9 +183,14 @@ class Janus_Client
      */
     public function getArp($spEntityId)
     {
+        $profiler = EngineBlock_ApplicationSingleton::getInstance()->getProfiler();
+        $profiler->startBlock(__METHOD__);
+
         $response = $this->getRestClient()->arp()
                                           ->entityid($spEntityId)
                                           ->get();
+        $profiler->endBlock();
+
         return $response;
     }
     
@@ -166,10 +208,15 @@ class Janus_Client
      */
     public function getIdpList($keys=array(), $forSpEntityId=null)
     {
+        $profiler = EngineBlock_ApplicationSingleton::getInstance()->getProfiler();
+        $profiler->startBlock(__METHOD__);
+
         $response = $this->getRestClient()->getIdpList()
                                            ->keys(implode(",", $keys))
                                            ->spentityid($forSpEntityId)
-                                           ->get();                                        
+                                           ->get();
+        $profiler->endBlock();
+
         return $response;                                          
     }
     
@@ -184,9 +231,14 @@ class Janus_Client
      */
     public function getSpList($keys=array())
     {
+        $profiler = EngineBlock_ApplicationSingleton::getInstance()->getProfiler();
+        $profiler->startBlock(__METHOD__);
+
         $response = $this->getRestClient()->getSpList()
                                            ->keys(implode(",", $keys))
                                            ->get();
+        $profiler->endBlock();
+
         return $response;                                         
     }
     
@@ -205,10 +257,15 @@ class Janus_Client
      */
     public function findIdentifiersByMetadata($key, $value)
     {
+        $profiler = EngineBlock_ApplicationSingleton::getInstance()->getProfiler();
+        $profiler->startBlock(__METHOD__);
+
         $response = $this->getRestClient()->findIdentifiersByMetadata()
                                           ->key($key)
                                           ->value($value)
                                           ->get();
+        $profiler->endBlock();
+
         return $response;
     }
 
