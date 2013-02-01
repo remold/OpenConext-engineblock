@@ -22,18 +22,11 @@
  * @copyright Copyright © 2010-2011 SURFnet SURFnet bv, The Netherlands (http://www.surfnet.nl)
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
-require_once '../../library/EngineBlock/Profiler.php';
-
-EngineBlock_Profiler::markBootstrapStart();
-
 require '../../library/EngineBlock/ApplicationSingleton.php';
 
 $application = EngineBlock_ApplicationSingleton::getInstance();
 $application->bootstrap();
 
-$profiler = $application->getProfiler();
-
-$profiler->startBlock('dispatch');
 $dispatcher = new EngineBlock_Dispatcher();
 
 $dispatcher->setRouters(array(
@@ -41,7 +34,4 @@ $dispatcher->setRouters(array(
 ));
 $dispatcher->dispatch();
 
-$profiler->startBlock('send Response');
 $application->getHttpResponse()->send();
-
-$application->getProfiler()->logReport();

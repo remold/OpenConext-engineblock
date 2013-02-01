@@ -309,8 +309,11 @@ class EngineBlock_Application_Bootstrapper
         $profiler = new EngineBlock_Profiler($this->_application->getLog());
         $profiler->startBlock('app');
 
-        $this->_application->setProfiler($profiler);
+        register_shutdown_function(function() use ($profiler) {
+            $profiler->logReport();
+        });
 
+        $this->_application->setProfiler($profiler);
     }
 
     protected function _setEnvironmentIdByEnvironment()

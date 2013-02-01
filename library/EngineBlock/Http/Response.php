@@ -56,6 +56,8 @@ class EngineBlock_Http_Response
 
     public function send()
     {
+        EngineBlock_ApplicationSingleton::getInstance()->getProfiler()->startBlock('send Response');
+
         foreach ($this->_headers as $headerName => $headerValue) {
             header("$headerName: $headerValue");
         }
