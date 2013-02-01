@@ -199,7 +199,11 @@ class EngineBlock_Profiler
 
         $totalPeakMemFormatted = str_pad(round(memory_get_peak_usage() / (1024 * 1024), 2) . 'MB', 8, ' ', STR_PAD_LEFT);
         $totalTimeFormatted = round($totalTime, 2);
-        $report = "########### Profiler: '$this->title' {$totalTimeFormatted}s total, {$totalPeakMemFormatted} ###########";
+        $report = '# Profiler:' . PHP_EOL
+            . '# Profiler:' . PHP_EOL
+            . "########### Profiler: '$this->title' {$totalTimeFormatted}s total, {$totalPeakMemFormatted} ###########" . PHP_EOL
+            . 'Profiler: REQUEST: ' . $_SERVER['REQUEST_URI'] . PHP_EOL;
+
         foreach ($topTimes as $record) {
             $numberFormatted = str_pad($record['number'], 5, ' ', STR_PAD_LEFT);
             $peakMemFormatted = str_pad(round($record['peakmem'] / (1024 * 1024), 2) . 'MB', 20, ' ', STR_PAD_LEFT);
