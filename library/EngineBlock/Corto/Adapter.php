@@ -341,9 +341,16 @@ class EngineBlock_Corto_Adapter
 
     protected function _callCortoServiceUri($serviceName, $idPProviderHash = "")
     {
+        $profiler = EngineBlock_ApplicationSingleton::getInstance()->getProfiler();
+        $profiler->startBlock('init proxy');
+
         $this->_initProxy();
 
+        $profiler->startBlock('proxy server');
+
         $this->_proxyServer->serve($serviceName, $idPProviderHash);
+
+        $profiler->startBlock('proxy response');
 
         $this->_processProxyServerResponse();
 
@@ -356,21 +363,34 @@ class EngineBlock_Corto_Adapter
             return;
         }
 
+        $profiler = EngineBlock_ApplicationSingleton::getInstance()->getProfiler();
+        $profiler->startBlock('get core proxy');
+
         $proxyServer = $this->_getCoreProxy();
+
+        $profiler->startBlock('configure proxy');
 
         $this->_configureProxyServer($proxyServer);
 
         $this->_proxyServer = $proxyServer;
+
+        $profiler->startBlock('apply rem ent filter');
 
         $this->_applyRemoteEntitiesFilters($this->_proxyServer);
     }
 
     protected function _configureProxyServer(EngineBlock_Corto_ProxyServer $proxyServer)
     {
+        $profiler = EngineBlock_ApplicationSingleton::getInstance()->getProfiler();
+        $profiler->startBlock('set Log');
+
         $proxyServer->setSystemLog($this->_getSystemLog());
         $proxyServer->setSessionLogDefault($this->_getSessionLog());
 
         $application = EngineBlock_ApplicationSingleton::getInstance();
+
+
+        $profiler->startBlock('set configs');
 
         $proxyServer->setConfigs(array(
             'debug' => $application->getConfigurationValue('debug', false),
@@ -396,7 +416,11 @@ class EngineBlock_Corto_Adapter
             'metadataValidUntilSeconds' => 86400, // This sets the time (in seconds) the entity metadata is valid.
         ));
 
+        $profiler->startBlock('get remote entities');
+
         $remoteEntities = $this->_getRemoteEntities();
+
+        $profiler->startBlock('decorate remote entities');
 
         /**
          * Augment our own IdP entry with stuff that can't be set via the Service Registry (yet)
@@ -507,17 +531,29 @@ class EngineBlock_Corto_Adapter
         unset($remoteEntities[$idpEntityId]);
         $proxyServer->setRemoteEntities($remoteEntities);
 
+
+        $profiler->startBlock('set template source');
+
         $proxyServer->setTemplateSource(
             EngineBlock_Corto_ProxyServer::TEMPLATE_SOURCE_FILESYSTEM,
             array('FilePath'=>ENGINEBLOCK_FOLDER_MODULES . 'Authentication/View/Proxy/')
         );
 
+        $profiler->startBlock('set bindings');
+
         $proxyServer->setBindingsModule(new EngineBlock_Corto_Module_Bindings($proxyServer));
+
+        $profiler->startBlock('set services');
+
         $proxyServer->setServicesModule(new EngineBlock_Corto_Module_Services($proxyServer));
+
+        $profiler->startBlock('set vo context');
 
         if ($this->_voContext!=null) {
             $proxyServer->setVirtualOrganisationContext($this->_voContext);
         }
+
+
     }
 
     /**

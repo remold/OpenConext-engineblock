@@ -110,6 +110,10 @@ class Authentication_Controller_IdentityProvider extends EngineBlock_Controller_
 
     public function metadataAction($argument = null)
     {
+        $profiler = EngineBlock_ApplicationSingleton::getInstance()->getProfiler();
+        $profiler->startBlock(__FUNCTION__ . ' start');
+
+
         $this->setNoRender();
 
         $proxyServer = new EngineBlock_Corto_Adapter();
@@ -119,6 +123,8 @@ class Authentication_Controller_IdentityProvider extends EngineBlock_Controller_
         }
 
         $proxyServer->idPMetadata();
+
+        $profiler->startBlock('after');
     }
 
     public function processConsentAction()
