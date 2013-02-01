@@ -358,7 +358,7 @@ class EngineBlock_ApplicationSingleton
     /**
      * @param \EngineBlock_Profiler $profiler
      */
-    public function setProfiler($profiler)
+    public function setProfiler(EngineBlock_Profiler $profiler)
     {
         $this->profiler = $profiler;
         return $this;
