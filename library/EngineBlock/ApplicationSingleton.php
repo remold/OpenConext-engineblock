@@ -22,7 +22,7 @@
  * @copyright Copyright © 2010-2011 SURFnet SURFnet bv, The Netherlands (http://www.surfnet.nl)
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
-require_once '../../library/EngineBlock/Profiler.php';
+require_once __DIR__ .'/Profiler.php';
 EngineBlock_Profiler::markBootstrapStart();
 
 define('ENGINEBLOCK_FOLDER_ROOT'       , dirname(__FILE__) . '/../../');
