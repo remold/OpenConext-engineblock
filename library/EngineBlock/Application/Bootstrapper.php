@@ -60,6 +60,8 @@ class EngineBlock_Application_Bootstrapper
         $this->_bootstrapLayout();
         $this->_bootstrapTranslations();
 
+        $this->_bootstrapProfiler();
+
         $this->_bootstrapped = true;
 
         return $this;
@@ -301,6 +303,14 @@ class EngineBlock_Application_Bootstrapper
         }
 
         $this->_application->setTranslator($translate);
+    }
+
+    protected function _bootstrapProfiler() {
+        $profiler = new EngineBlock_Profiler($this->_application->getLog());
+        $profiler->startBlock('app');
+
+        $this->_application->setProfiler($profiler);
+
     }
 
     protected function _setEnvironmentIdByEnvironment()

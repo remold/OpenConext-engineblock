@@ -92,6 +92,12 @@ class EngineBlock_ApplicationSingleton
      */
     protected $_diContainer;
 
+
+    /**
+     * @var EngineBlock_Profiler
+     */
+    protected $profiler;
+
     /**
      *
      */
@@ -345,5 +351,22 @@ class EngineBlock_ApplicationSingleton
     public function getDiContainer()
     {
         return $this->_diContainer;
+    }
+
+    /**
+     * @param \EngineBlock_Profiler $profiler
+     */
+    public function setProfiler($profiler)
+    {
+        $this->profiler = $profiler;
+        return $this;
+    }
+
+    /**
+     * @return \EngineBlock_Profiler
+     */
+    public function getProfiler()
+    {
+        return $this->profiler;
     }
 }
