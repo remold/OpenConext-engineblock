@@ -237,7 +237,11 @@ class EngineBlock_Profiler
 
             // @todo make this optional
             // Show memory consuming blocks in different colors
-            $memDiffFormatted= str_pad(round($record['memusagediff'] / (1024 * 1024), 2) . 'MB', 20, ' ', STR_PAD_LEFT);
+            $memColorCode = $this->mapPercentageToColor($memusagediffPercentage);
+
+            if ($memColorCode) {
+                $memDiffFormatted = $this->colorString($memDiffFormatted, $memColorCode);
+            }
 
             $percentage = $record['percentage'];
             $timeFormatted = str_pad($record['milliseconds'] . "ms ({$percentage}%)", 20, ' ', STR_PAD_LEFT);
