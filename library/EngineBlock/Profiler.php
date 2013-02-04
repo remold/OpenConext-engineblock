@@ -219,7 +219,8 @@ class EngineBlock_Profiler
         });
 
 
-        $totalPeakMemFormatted = str_pad(round(memory_get_peak_usage() / (1024 * 1024), 2) . 'MB', 8, ' ', STR_PAD_LEFT);
+        $totalPeakMem = memory_get_peak_usage();
+        $totalPeakMemFormatted = str_pad(round($totalPeakMem / (1024 * 1024), 2) . 'MB', 8, ' ', STR_PAD_LEFT);
         $totalTimeFormatted = round($totalTime, 2);
         $report = '# Profiler:' . PHP_EOL
             . '# Profiler:' . PHP_EOL
@@ -229,6 +230,13 @@ class EngineBlock_Profiler
         foreach ($topTimes as $record) {
             $numberFormatted = str_pad($record['number'], 5, ' ', STR_PAD_LEFT);
             $peakMemFormatted = str_pad(round($record['peakmem'] / (1024 * 1024), 2) . 'MB', 20, ' ', STR_PAD_LEFT);
+
+            $memusagediffPercentage = round(($record['memusagediff'] / $totalPeakMem) * 100);
+
+            $memDiffFormatted= str_pad(round($record['memusagediff'] / (1024 * 1024), 2) . 'MB (' . $memusagediffPercentage . ')', 20, ' ', STR_PAD_LEFT);
+
+            // @todo make this optional
+            // Show memory consuming blocks in different colors
             $memDiffFormatted= str_pad(round($record['memusagediff'] / (1024 * 1024), 2) . 'MB', 20, ' ', STR_PAD_LEFT);
 
             $percentage = $record['percentage'];
