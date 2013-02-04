@@ -16,8 +16,10 @@ use Zend_Log as Logger;
  */
 class EngineBlock_Profiler
 {
+
+    const FOREGROUND_COLOR_CODE_YELLOW = '1;33';
     const FOREGROUND_COLOR_CODE_RED = '0;31';
-    const FOREGROUND_COLOR_CODE_LIGHT_RED = '1;31';
+    const FOREGROUND_COLOR_CODE_CYAN = '1;35';
 
     // @todo make these the same?
     const START_RECORD = 'start';
@@ -234,16 +236,31 @@ class EngineBlock_Profiler
 
             // @todo make this optional
             // Show Time consuming blocks in different colors
-            if ($percentage > 40) {
-                $timeFormatted = $this->colorString($timeFormatted, self::FOREGROUND_COLOR_CODE_RED);
-            } elseif ($percentage > 20) {
-                    $timeFormatted = $this->colorString($timeFormatted, self::FOREGROUND_COLOR_CODE_LIGHT_RED);
+            $timeColorCode = $this->mapPercentageToColor($percentage);
+            if ($timeColorCode) {
+                $timeFormatted = $this->colorString($timeFormatted, $timeColorCode);
             }
 
             $report .= $row = PHP_EOL . " - Profiler:{$numberFormatted} {$timeFormatted} {$memDiffFormatted}{$peakMemFormatted} - \"{$record['name']}\" ";
         }
 
         return $report;
+    }
+
+    /**
+     * @param $percentage
+     * @return string
+     */
+    private function mapPercentageToColor($percentage) {
+        if ($percentage > 40) {
+            return self::FOREGROUND_COLOR_CODE_RED;
+        } elseif ($percentage > 20) {
+            return self::FOREGROUND_COLOR_CODE_CYAN;
+        } elseif ($percentage > 10) {
+            return self::FOREGROUND_COLOR_CODE_YELLOW;
+        }
+
+        return null;
     }
 
     private function colorString($string, $colorCode)
