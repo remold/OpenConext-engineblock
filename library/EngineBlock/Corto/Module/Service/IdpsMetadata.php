@@ -131,6 +131,8 @@ class EngineBlock_Corto_Module_Service_IdpsMetadata extends EngineBlock_Corto_Mo
 
         // Create entities descriptor document
         $entitiesDescriptor = new EngineBlock_Saml_EntitiesDescriptor();
+        $entitiesDescriptor->setValidUntil('2013-02-08T14:04:37Z');
+        $entitiesDescriptor->setId('CORTO11bf3363d5d4bed6d06794bae147c1ee4c6e3b3c');
 
         // Create signature
         $signature = new EngineBlock_Saml_EntitiesDescriptor_Signature();
