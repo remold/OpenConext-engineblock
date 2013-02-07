@@ -6,6 +6,7 @@ class EngineBlock_Application_DiContainer extends Pimple
     const MAILER = 'mailer';
     const FILTER_COMMAND_FACTORY = 'filterCommandFactory';
     const DATABASE_CONNECTION_FACTORY = 'databaseConnectionFactory';
+    const SERIALIZER = 'serializer';
 
     public function __construct()
     {
@@ -14,6 +15,7 @@ class EngineBlock_Application_DiContainer extends Pimple
         $this->registerMailer();
         $this->registerFilterCommandFactory();
         $this->registerDatabaseConnectionFactory();
+        $this->registerSerializer();
     }
 
     protected function registerXmlConverter()
@@ -56,6 +58,21 @@ class EngineBlock_Application_DiContainer extends Pimple
         $this[self::DATABASE_CONNECTION_FACTORY] = $this->share(function (EngineBlock_Application_DiContainer $container)
         {
             return new EngineBlock_Database_ConnectionFactory();
+        });
+    }
+
+    protected function registerSerializer()
+    {
+        $this[self::SERIALIZER] = $this->share(function (EngineBlock_Application_DiContainer $container)
+        {
+            \Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace(
+                'JMS\Serializer\Annotation',
+                ENGINEBLOCK_FOLDER_ROOT . "/vendor/jms/serializer/src"
+            );
+
+            return JMS\Serializer\SerializerBuilder::create()
+                ->setDebug(true)
+                ->build();
         });
     }
 }

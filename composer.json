@@ -3,7 +3,8 @@
     "description": "Surfnet OpenConext SAML proxy",
     "minimum-stability": "stable",
     "require" : {
-        "pimple/pimple": "dev-master"
+        "pimple/pimple": "dev-master",
+        "jms/serializer": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*",
