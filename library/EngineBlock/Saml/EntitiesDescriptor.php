@@ -50,37 +50,17 @@ class EngineBlock_Saml_EntitiesDescriptor
      */
     protected $signature;
 
-    public function setComment($comment)
-    {
-        $this->comment = $comment;
-        return $this;
-    }
+    /**
+     * @Serializer\XmlList(inline = true, entry = "md:EntityDescriptor")
+     * @Serializer\Type("array<EngineBlock_Saml_EntitiesDescriptor_EntityDescriptor>")
+     */
+    protected $entityDescriptors;
 
-    public function getComment()
-    {
-        return $this->comment;
-    }
-
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    public function getId()
-    {
-        return $this->id;
-    }
 
     public function setSignature($signature)
     {
         $this->signature = $signature;
         return $this;
-    }
-
-    public function getSignature()
-    {
-        return $this->signature;
     }
 
     public function setValidUntil($validUntil)
@@ -89,30 +69,15 @@ class EngineBlock_Saml_EntitiesDescriptor
         return $this;
     }
 
-    public function getValidUntil()
+    public function setId($id)
     {
-        return $this->validUntil;
-    }
-
-    public function setXmlNameSpaceMetaData($xmlNameSpaceMetaData)
-    {
-        $this->xmlNameSpaceMetaData = $xmlNameSpaceMetaData;
+        $this->id = $id;
         return $this;
     }
 
-    public function getXmlNameSpaceMetaData()
+    public function setEntityDescriptors(array $entityDescriptors)
     {
-        return $this->xmlNameSpaceMetaData;
-    }
-
-    public function setXmlNameSpaceMetaDataUi($xmlNameSpaceMetaDataUi)
-    {
-        $this->xmlNameSpaceMetaDataUi = $xmlNameSpaceMetaDataUi;
+        $this->entityDescriptors = $entityDescriptors;
         return $this;
-    }
-
-    public function getXmlNameSpaceMetaDataUi()
-    {
-        return $this->xmlNameSpaceMetaDataUi;
     }
 }

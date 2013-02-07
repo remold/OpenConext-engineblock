@@ -1,0 +1,21 @@
+<?php
+
+use JMS\Serializer\Annotation as Serializer;
+
+class EngineBlock_Saml_EntitiesDescriptor_EntityDescriptor
+{
+  /**
+     * Ex: https://openidp.feide.no
+     *
+     * @Serializer\XmlAttribute
+     * @Serializer\SerializedName("entityID")
+     * @Serializer\Type("string")
+     */
+    protected $entityId;
+
+    public function setEntityId($entityId)
+    {
+        $this->entityId = $entityId;
+        return $this;
+    }
+}

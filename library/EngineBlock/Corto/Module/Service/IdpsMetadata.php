@@ -129,10 +129,21 @@ class EngineBlock_Corto_Module_Service_IdpsMetadata extends EngineBlock_Corto_Mo
     {
         header('Content-Type: text/plain');
 
-        // Create entities descriptor document with signature
+        // Create entities descriptor document
         $entitiesDescriptor = new EngineBlock_Saml_EntitiesDescriptor();
+
+        // Create signature
         $signature = new EngineBlock_Saml_EntitiesDescriptor_Signature();
         $entitiesDescriptor->setSignature($signature);
+
+        // Create entity descriptors
+        $entityDescriptorList = array();
+        for ($i = 1; $i <= 4; $i++) {
+            $entityDescriptor = new EngineBlock_Saml_EntitiesDescriptor_EntityDescriptor();
+            $entityDescriptor->setEntityId('EntityNr' . $i);
+            $entityDescriptorList[] = $entityDescriptor;
+        }
+        $entitiesDescriptor->setEntityDescriptors($entityDescriptorList);
 
         // Get serializer
         $diContainer = EngineBlock_ApplicationSingleton::getInstance()->getDiContainer();
