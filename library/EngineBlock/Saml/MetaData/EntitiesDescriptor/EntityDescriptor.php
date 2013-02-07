@@ -2,7 +2,7 @@
 
 use JMS\Serializer\Annotation as Serializer;
 
-class EngineBlock_Saml_EntitiesDescriptor_EntityDescriptor
+class EngineBlock_Saml_MetaData_EntitiesDescriptor_EntityDescriptor
 {
   /**
      * Ex: https://openidp.feide.no

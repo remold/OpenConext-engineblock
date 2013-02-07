@@ -5,7 +5,7 @@ use JMS\Serializer\Annotation AS Serializer;
 /**
  * @Serializer\XmlRoot("md:EntitiesDescriptor")
  */
-class EngineBlock_Saml_EntitiesDescriptor
+class EngineBlock_Saml_MetaData_EntitiesDescriptor
 {
     /**
      * @todo find out how to denote a comment
@@ -58,7 +58,7 @@ class EngineBlock_Saml_EntitiesDescriptor
 
     /**
      * @Serializer\XmlList(inline = true, entry = "md:EntityDescriptor")
-     * @Serializer\Type("array<EngineBlock_Saml_EntitiesDescriptor_EntityDescriptor>")
+     * @Serializer\Type("array<EngineBlock_Saml_MetaData_EntitiesDescriptor_EntityDescriptor>")
      * @var array
      */
     protected $entityDescriptors;
