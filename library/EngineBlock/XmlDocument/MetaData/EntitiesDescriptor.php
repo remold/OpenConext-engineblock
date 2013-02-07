@@ -5,7 +5,7 @@ use JMS\Serializer\Annotation AS Serializer;
 /**
  * @Serializer\XmlRoot("md:EntitiesDescriptor")
  */
-class EngineBlock_Saml_MetaData_EntitiesDescriptor
+class EngineBlock_XmlDocument_MetaData_EntitiesDescriptor
 {
     /**
      * @todo find out how to denote a comment
@@ -51,20 +51,20 @@ class EngineBlock_Saml_MetaData_EntitiesDescriptor
 
     /**
      * @Serializer\SerializedName("ds:Signature");
-     * @Serializer\Type("EngineBlock_Saml_Dsig_Signature")
-     * @var EngineBlock_Saml_Dsig_Signature
+     * @Serializer\Type("EngineBlock_XmlDocument_Dsig_Signature")
+     * @var EngineBlock_XmlDocument_Dsig_Signature
      */
     protected $signature;
 
     /**
      * @Serializer\XmlList(inline = true, entry = "md:EntityDescriptor")
-     * @Serializer\Type("array<EngineBlock_Saml_MetaData_EntitiesDescriptor_EntityDescriptor>")
+     * @Serializer\Type("array<EngineBlock_XmlDocument_MetaData_EntitiesDescriptor_EntityDescriptor>")
      * @var array
      */
     protected $entityDescriptors;
 
 
-    public function setSignature(EngineBlock_Saml_Dsig_Signature $signature)
+    public function setSignature(EngineBlock_XmlDocument_Dsig_Signature $signature)
     {
         $this->signature = $signature;
         return $this;

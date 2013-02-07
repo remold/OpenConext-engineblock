@@ -130,20 +130,20 @@ class EngineBlock_Corto_Module_Service_IdpsMetadata extends EngineBlock_Corto_Mo
         header('Content-Type: text/plain');
 
         // Create entities descriptor document
-        $entitiesDescriptor = new EngineBlock_Saml_MetaData_EntitiesDescriptor();
+        $entitiesDescriptor = new EngineBlock_XmlDocument_MetaData_EntitiesDescriptor();
         $entitiesDescriptor->setValidUntil('2013-02-08T14:04:37Z');
         $entitiesDescriptor->setId('CORTO11bf3363d5d4bed6d06794bae147c1ee4c6e3b3c');
 
         // Create signature
-        $signature = new EngineBlock_Saml_Dsig_Signature();
-        $signedInfo = new EngineBlock_Saml_Dsig_Signature_SignedInfo();
+        $signature = new EngineBlock_XmlDocument_Dsig_Signature();
+        $signedInfo = new EngineBlock_XmlDocument_Dsig_Signature_SignedInfo();
         $signature->setSignedInfo($signedInfo   );
         $entitiesDescriptor->setSignature($signature);
 
         // Create entity descriptors
         $entityDescriptorList = array();
         for ($i = 1; $i <= 4; $i++) {
-            $entityDescriptor = new EngineBlock_Saml_MetaData_EntitiesDescriptor_EntityDescriptor();
+            $entityDescriptor = new EngineBlock_XmlDocument_MetaData_EntitiesDescriptor_EntityDescriptor();
             $entityDescriptor->setEntityId('EntityNr' . $i);
             $entityDescriptorList[] = $entityDescriptor;
         }
