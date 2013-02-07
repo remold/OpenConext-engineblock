@@ -86,6 +86,11 @@ class EngineBlock_Corto_Module_Service_IdpsMetadata extends EngineBlock_Corto_Mo
         // Convert the document to XML
         $xml = EngineBlock_Corto_XmlToArray::array2xml($document);
 
+        /* Test */
+        $xmlCreatedWithSerializer = $this->createXmlWithSerializer();
+        die($xmlCreatedWithSerializer);
+        /* end test */
+
         // If debugging is enabled then validate it according to the schema
         if ($this->_server->getConfig('debug', false)) {
             $validator = new EngineBlock_Xml_Validator(
@@ -115,5 +120,30 @@ class EngineBlock_Corto_Module_Service_IdpsMetadata extends EngineBlock_Corto_Mo
         $callbackFn();
 
         $this->_server->setVirtualOrganisationContext($voContext);
+    }
+
+    /**
+     * Proof of concept code using JMS serializer to replace Corto XML to Array
+     */
+    private function createXmlWithSerializer()
+    {
+        header('Content-Type: text/plain');
+
+        // Create entities descriptor document with signature
+        $entitiesDescriptor = new EngineBlock_Saml_EntitiesDescriptor();
+        $signature = new EngineBlock_Saml_EntitiesDescriptor_Signature();
+        $entitiesDescriptor->setSignature($signature);
+
+        // Get serializer
+        $diContainer = EngineBlock_ApplicationSingleton::getInstance()->getDiContainer();
+        /** @var $serializer \JMS\SerializerBundle\Serializer\Serializer */
+        $serializer = $diContainer[$diContainer::SERIALIZER];
+
+        // Try to serialize document to xml
+        try {
+            return $serializer->serialize($entitiesDescriptor, 'xml');
+        } catch (Exception $ex) {
+            die('Serializer error (' . get_class($ex) . ') ' . $ex->getMessage());
+        }
     }
 }
