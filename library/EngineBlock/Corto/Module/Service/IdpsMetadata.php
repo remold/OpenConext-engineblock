@@ -136,6 +136,8 @@ class EngineBlock_Corto_Module_Service_IdpsMetadata extends EngineBlock_Corto_Mo
 
         // Create signature
         $signature = new EngineBlock_Saml_EntitiesDescriptor_Signature();
+        $signedInfo = new EngineBlock_Saml_EntitiesDescriptor_Signature_SignedInfo();
+        $signature->setSignedInfo($signedInfo   );
         $entitiesDescriptor->setSignature($signature);
 
         // Create entity descriptors
