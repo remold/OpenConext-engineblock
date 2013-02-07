@@ -9,6 +9,7 @@ class EngineBlock_Saml_EntitiesDescriptor
 {
     /**
      * @todo find out how to denote a comment
+     * @var string
      */
     protected $comment;
 
@@ -16,6 +17,7 @@ class EngineBlock_Saml_EntitiesDescriptor
      * @Serializer\XmlAttribute
      * @Serializer\SerializedName("xmlns:md")
      * @Serializer\Type("string")
+     * @var string
      */
     protected $xmlNameSpaceMetaData = 'urn:oasis:names:tc:SAML:2.0:metadata';
 
@@ -23,6 +25,7 @@ class EngineBlock_Saml_EntitiesDescriptor
      * @Serializer\XmlAttribute
      * @Serializer\SerializedName("xmlns:mdui")
      * @Serializer\Type("string")
+     * @var string
      */
     protected $xmlNameSpaceMetaDataUi = 'urn:oasis:names:tc:SAML:metadata:ui';
 
@@ -32,6 +35,7 @@ class EngineBlock_Saml_EntitiesDescriptor
      * @Serializer\XmlAttribute
      * @Serializer\SerializedName("validUntil")
      * @Serializer\Type("string")
+     * @var string
      */
     protected $validUntil;
 
@@ -41,23 +45,26 @@ class EngineBlock_Saml_EntitiesDescriptor
      * @Serializer\XmlAttribute
      * @Serializer\SerializedName("ID")
      * @Serializer\Type("string");
+     * @var string
      */
     protected $id;
 
     /**
      * @Serializer\SerializedName("ds:Signature");
      * @Serializer\Type("EngineBlock_Saml_EntitiesDescriptor_Signature")
+     * @var EngineBlock_Saml_EntitiesDescriptor_Signature
      */
     protected $signature;
 
     /**
      * @Serializer\XmlList(inline = true, entry = "md:EntityDescriptor")
      * @Serializer\Type("array<EngineBlock_Saml_EntitiesDescriptor_EntityDescriptor>")
+     * @var array
      */
     protected $entityDescriptors;
 
 
-    public function setSignature($signature)
+    public function setSignature(EngineBlock_Saml_EntitiesDescriptor_Signature $signature)
     {
         $this->signature = $signature;
         return $this;

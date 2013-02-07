@@ -10,6 +10,7 @@ class EngineBlock_Saml_EntitiesDescriptor_EntityDescriptor
      * @Serializer\XmlAttribute
      * @Serializer\SerializedName("entityID")
      * @Serializer\Type("string")
+     * @var string
      */
     protected $entityId;
 
