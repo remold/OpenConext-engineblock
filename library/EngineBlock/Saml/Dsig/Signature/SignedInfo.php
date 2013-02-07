@@ -2,7 +2,7 @@
 
 use JMS\Serializer\Annotation as Serializer;
 
-class EngineBlock_Saml_EntitiesDescriptor_Signature_SignedInfo
+class EngineBlock_Saml_Dsig_Signature_SignedInfo
 {
     /**
      * @Serializer\XmlAttribute

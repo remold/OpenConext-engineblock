@@ -2,7 +2,7 @@
 
 use JMS\Serializer\Annotation AS Serializer;
 
-class EngineBlock_Saml_EntitiesDescriptor_Signature
+class EngineBlock_Saml_Dsig_Signature
 {
     /**
      * @Serializer\SerializedName("xmlns:ds")
@@ -14,12 +14,12 @@ class EngineBlock_Saml_EntitiesDescriptor_Signature
 
     /**
      * @Serializer\SerializedName("ds:SignedInfo")
-     * @Serializer\Type("EngineBlock_Saml_EntitiesDescriptor_Signature_SignedInfo")
-     * @var EngineBlock_Saml_EntitiesDescriptor_Signature_SignedInfo
+     * @Serializer\Type("EngineBlock_Saml_Dsig_Signature_SignedInfo")
+     * @var EngineBlock_Saml_Dsig_Signature_SignedInfo
      */
     protected $signedInfo;
 
-    public function setSignedInfo(EngineBlock_Saml_EntitiesDescriptor_Signature_SignedInfo $signedInfo)
+    public function setSignedInfo(EngineBlock_Saml_Dsig_Signature_SignedInfo $signedInfo)
     {
         $this->signedInfo = $signedInfo;
         return $this;

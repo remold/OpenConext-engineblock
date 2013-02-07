@@ -51,8 +51,8 @@ class EngineBlock_Saml_EntitiesDescriptor
 
     /**
      * @Serializer\SerializedName("ds:Signature");
-     * @Serializer\Type("EngineBlock_Saml_EntitiesDescriptor_Signature")
-     * @var EngineBlock_Saml_EntitiesDescriptor_Signature
+     * @Serializer\Type("EngineBlock_Saml_Dsig_Signature")
+     * @var EngineBlock_Saml_Dsig_Signature
      */
     protected $signature;
 
@@ -64,7 +64,7 @@ class EngineBlock_Saml_EntitiesDescriptor
     protected $entityDescriptors;
 
 
-    public function setSignature(EngineBlock_Saml_EntitiesDescriptor_Signature $signature)
+    public function setSignature(EngineBlock_Saml_Dsig_Signature $signature)
     {
         $this->signature = $signature;
         return $this;
