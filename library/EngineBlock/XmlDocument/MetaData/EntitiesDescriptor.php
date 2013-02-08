@@ -18,6 +18,7 @@ class EngineBlock_XmlDocument_MetaData_EntitiesDescriptor
      * @Serializer\SerializedName("xmlns:md")
      * @Serializer\Type("string")
      * @var string
+     * @todo should these namespace be changeable?
      */
     protected $xmlNameSpaceMetaData = 'urn:oasis:names:tc:SAML:2.0:metadata';
 
