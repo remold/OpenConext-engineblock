@@ -401,6 +401,8 @@ class EngineBlock_Corto_ProxyServer
      * @param string $idp
      * @param array|null $scoping
      * @return array
+     *
+     * @todo replace this with serializer
      */
     public function createEnhancedRequest($originalRequest, $idp, array $scoping = null)
     {
