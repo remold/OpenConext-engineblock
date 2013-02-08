@@ -16,6 +16,8 @@ class EngineBlock_Corto_XmlToArray
 
     /**
      * @var array All namespaces used in SAML2 messages.
+     *
+     * Handig lijstje
      */
     protected static $_namespaces = array(
         'urn:oasis:names:tc:SAML:1.0:protocol'          => 'samlp',
