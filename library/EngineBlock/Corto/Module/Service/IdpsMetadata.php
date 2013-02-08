@@ -124,6 +124,9 @@ class EngineBlock_Corto_Module_Service_IdpsMetadata extends EngineBlock_Corto_Mo
 
     /**
      * Proof of concept code using JMS serializer to replace Corto XML to Array
+     *
+     * AuthNRequest lijkt makkelijk om mee te beginnen
+     * Uitzoeken of nesting in XML binnen een XML namespace ook zo in de PHP namespace moet komen of dat er ook andere volgordes mogelijk zijn
      */
     private function createXmlWithSerializer()
     {
