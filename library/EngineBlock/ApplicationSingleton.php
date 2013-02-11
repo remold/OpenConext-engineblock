@@ -22,10 +22,11 @@
  * @copyright Copyright © 2010-2011 SURFnet SURFnet bv, The Netherlands (http://www.surfnet.nl)
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
-require_once __DIR__ .'/Profiler.php';
-EngineBlock_Profiler::markBootstrapStart();
-
 define('ENGINEBLOCK_FOLDER_ROOT'       , dirname(__FILE__) . '/../../');
+
+require_once ENGINEBLOCK_FOLDER_ROOT . 'vendor/lucasvanlierop/php-profiler/lib/Profiler.php';
+\Lvl\Profiler::markBootstrapStart();
+
 define('ENGINEBLOCK_FOLDER_LIBRARY'    , ENGINEBLOCK_FOLDER_ROOT . 'library/');
 define('ENGINEBLOCK_FOLDER_APPLICATION', ENGINEBLOCK_FOLDER_ROOT . 'application/');
 define('ENGINEBLOCK_FOLDER_MODULES'    , ENGINEBLOCK_FOLDER_APPLICATION . 'modules/');
@@ -96,7 +97,7 @@ class EngineBlock_ApplicationSingleton
 
 
     /**
-     * @var EngineBlock_Profiler
+     * @var \Lvl\Profiler
      */
     protected $profiler;
 
@@ -356,16 +357,16 @@ class EngineBlock_ApplicationSingleton
     }
 
     /**
-     * @param \EngineBlock_Profiler $profiler
+     * @param \\Lvl\Profiler $profiler
      */
-    public function setProfiler(EngineBlock_Profiler $profiler)
+    public function setProfiler(\Lvl\Profiler $profiler)
     {
         $this->profiler = $profiler;
         return $this;
     }
 
     /**
-     * @return \EngineBlock_Profiler
+     * @return \\Lvl\Profiler
      */
     public function getProfiler()
     {

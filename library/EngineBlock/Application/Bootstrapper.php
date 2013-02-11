@@ -306,7 +306,7 @@ class EngineBlock_Application_Bootstrapper
     }
 
     protected function _bootstrapProfiler() {
-        $profiler = new EngineBlock_Profiler($this->_application->getLog());
+        $profiler = new \Lvl\Profiler($this->_application->getLog());
         $profiler->startBlock('app');
 
         register_shutdown_function(function() use ($profiler) {
