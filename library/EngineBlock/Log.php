@@ -26,6 +26,14 @@
 class EngineBlock_Log extends Zend_Log
 {
     /**
+     * This token will be prefixed to each log message but not to attachments. This makes it easier to filter only the
+     * messages from the log by running a command like:
+     *
+     * sudo tail -f /var/log/messages | grep 'message:'
+     */
+    const MESSAGE_PREFIX = '[Message %s]';
+
+    /**
      * Remember unique request ID
      */
     protected $_requestId = null;
@@ -172,7 +180,7 @@ class EngineBlock_Log extends Zend_Log
 
                 // Annotate the message, except for profiling for it only make is harder to read
                 if (!strstr($writerEvent['message'], 'Profile')) {
-                    $writerEvent['message'] = $this->getPrefix() . $message . $this->getSuffix();
+                    $writerEvent['message'] = $this->getPrefix() . sprintf(self::MESSAGE_PREFIX, $event['priorityName']) . ' ' . $message . $this->getSuffix();
                 }
 
                 // log line for each file/message
