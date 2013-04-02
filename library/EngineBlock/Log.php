@@ -178,10 +178,8 @@ class EngineBlock_Log extends Zend_Log
                     $writer->write($attachmentEvent);
                 }
 
-                // Annotate the message, except for profiling for it only make is harder to read
-                if (!strstr($writerEvent['message'], 'Profile')) {
-                    $writerEvent['message'] = $this->getPrefix() . sprintf(self::MESSAGE_PREFIX, $event['priorityName']) . ' ' . $message . $this->getSuffix();
-                }
+                // Annotate the message
+                $writerEvent['message'] = $this->getPrefix() . sprintf(self::MESSAGE_PREFIX, $event['priorityName']) . ' ' . $message . $this->getSuffix();
 
                 // log line for each file/message
                 $writer->write($writerEvent);
