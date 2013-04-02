@@ -353,6 +353,7 @@ class EngineBlock_Application_Bootstrapper
 
         register_shutdown_function(function() use ($profiler, $logger) {
             $profiler->logReport();
+            $logger->getQueueWriter()->flush('post profiling');
         });
 
         $this->_application->setProfiler($profiler);
