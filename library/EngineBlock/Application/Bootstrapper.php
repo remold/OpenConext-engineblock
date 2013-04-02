@@ -339,11 +339,19 @@ class EngineBlock_Application_Bootstrapper
         $this->_application->setTranslator($translate);
     }
 
+    /**
+     * Initializes profiler
+     */
     protected function _bootstrapProfiler() {
-        $profiler = new \Lvl\Profiler($this->_application->getLog());
+        $profiler = new \Lvl\Profiler();
+
+        $logger = $this->_application->getLog();
+        $profiler->setLogCallback(function($message) use ($logger) {
+            $logger->info($message);
+        });
         $profiler->startBlock('app');
 
-        register_shutdown_function(function() use ($profiler) {
+        register_shutdown_function(function() use ($profiler, $logger) {
             $profiler->logReport();
         });
 
