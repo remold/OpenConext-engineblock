@@ -171,9 +171,14 @@ class EngineBlock_ApplicationSingleton
             $log->attach($prevException, 'previous exception');
         }
 
+        $message = $exception->getMessage();
+        if (empty($message)) {
+            $message = 'Exception without message "' . get_class($exception) . '"';
+        }
+
         // log exception
         $log->log(
-            $exception->getMessage(),
+            $message,
             $severity,
             $additionalInfo
         );

@@ -1,9 +1,9 @@
 {
-    "hash": "36e8733b482c26261231961530248b3c",
+    "hash": "3f450c201a008fe468b22d237ad9e2b2",
     "packages": [
         {
             "name": "pimple/pimple",
-            "version": "dev-master",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Pimple.git",
@@ -55,18 +55,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/lucasvanlierop/php-profiler.git",
-                "reference": "a1d0c2547a791b4e1014cdc980d1e22fe1173378"
+                "reference": "dc9a305d8d23d99bde4d5efbf22db142fea05d29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lucasvanlierop/php-profiler/zipball/a1d0c2547a791b4e1014cdc980d1e22fe1173378",
-                "reference": "a1d0c2547a791b4e1014cdc980d1e22fe1173378",
+                "url": "https://api.github.com/repos/lucasvanlierop/php-profiler/zipball/dc9a305d8d23d99bde4d5efbf22db142fea05d29",
+                "reference": "dc9a305d8d23d99bde4d5efbf22db142fea05d29",
                 "shasum": ""
             },
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "description": "A basic php profiler",
-            "time": "2013-02-11 16:15:27"
+            "time": "2013-04-03 11:42:24"
         },
         {
             "name": "phake/phake",
@@ -531,7 +531,6 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "pimple/pimple": 20,
         "phake/phake": 20,
         "lucasvanlierop/php-profiler": 20
     },
