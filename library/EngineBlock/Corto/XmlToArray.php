@@ -150,7 +150,7 @@ class EngineBlock_Corto_XmlToArray
 
     public static function xml2array($xml)
     {
-        $parser = xml_parser_create();
+        $parser = xml_parser_create_ns();
         $foldingOptionSet = xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
         if (!$foldingOptionSet) {
             throw new EngineBlock_Corto_XmlToArray_Exception(
@@ -187,10 +187,9 @@ class EngineBlock_Corto_XmlToArray
      */
 
     protected static $counter = 0;
-     
+
     protected static function _xml2array(&$elements, $level = 1, $namespaceMapping = array())
     {
-        static $defaultNs;
         $newElement = array();
 
         while(isset($elements[self::$counter])) {
@@ -208,26 +207,14 @@ class EngineBlock_Corto_XmlToArray
             if (isset($value['attributes']) && $attributes = $value['attributes']) {
                 foreach($attributes as $attributeKey => $attributeValue) {
                     unset($attributes[$attributeKey]);
-
-                    if (preg_match("/^xmlns:(.+)$/", $attributeKey, $namespacePrefixAndTag)) {
-                        if (!self::$_namespaces[$attributeValue]) {
-                            self::$_namespaces[$attributeValue] = $namespacePrefixAndTag[1];
-                        }
-                        $namespaceMapping[$namespacePrefixAndTag[1]] = self::$_namespaces[$attributeValue];
-                        $hashedAttributes['_xmlns:'.self::$_namespaces[$attributeValue]] = $attributeValue;
-                    } elseif (preg_match("/^xmlns$/", $attributeKey)) {
-                        $defaultNs = self::$_namespaces[$attributeValue];
-                    } else {
-                        $hashedAttributes[self::ATTRIBUTE_PFX . $attributeKey] = $attributeValue;
-                    }
+                    $hashedAttributes[self::ATTRIBUTE_PFX . $attributeKey] = $attributeValue;
                 }
             }
+
             $complete = array();
-            if (preg_match("/^(.+):(.+)$/", $tagName, $namespacePrefixAndTag) && $prefix = $namespaceMapping[$namespacePrefixAndTag[1]]) {
-                $tagName = $prefix . ":" . $namespacePrefixAndTag[2];
-            } else {
-                $tagName = $defaultNs . ":" . $tagName;
-            }
+
+            $tagName = self::_mapNamespacesToSaml($tagName);
+
             $complete[self::TAG_NAME_PFX] = $tagName;
             if ($hashedAttributes) {
                 $complete = array_merge($complete, $hashedAttributes);
@@ -253,6 +240,27 @@ class EngineBlock_Corto_XmlToArray
         }
         self::$counter = 0;
         return $newElement;
+    }
+
+    /**
+     * Maps namespace prefixes to the correct ones as used in saml
+     * 
+     * @param string $tagName
+     * @return string
+     */
+    private static function _mapNamespacesToSaml($tagName)
+    {
+        // find prefix and elementname. Prefix is lookup of the namespace within self::_namespaces
+        $fullNamespace =  substr($tagName, 0, strrpos($tagName, ':'));
+        if ($fullNamespace != "") {
+            // search _namespaces for namespace_prefix
+            if (isset(self::$_namespaces[$fullNamespace])) {
+                // prefix is found, replaces tagName with prefix:elementName
+                $tagName =  self::$_namespaces[$fullNamespace] . ":" . substr($tagName, strrpos($tagName, ':') +1 );
+            }
+        }
+
+        return $tagName;
     }
 
     /**
@@ -341,14 +349,37 @@ class EngineBlock_Corto_XmlToArray
 
     /**
      * @deprecated Use XML converter from DI container and use none static method attributesToArray() instead
-     * @param $attributes
+     * @param array $attributes
      * @return array
+     * @throws EngineBlock_Corto_XmlToArray_Exception
      */
-    public static function attributes2array($attributes)
+    public static function attributes2array(array $attributes)
     {
         $res = array();
-        foreach((array)$attributes as $attribute) {
+        foreach($attributes as $attribute) {
+            if(!isset($attribute['_Name'])) {
+                throw new EngineBlock_Corto_XmlToArray_Exception('Missing attribute name');
+            }
+
+            $res[$attribute['_Name']] = array();
+            if(!isset($attribute['saml:AttributeValue'])) {
+                continue;
+            }
+
+            if(!is_array($attribute['saml:AttributeValue'])) {
+                throw new EngineBlock_Corto_XmlToArray_Exception('AttributeValue collection is not an array');
+            }
+
+            // Add each value of the collection to the result
             foreach ($attribute['saml:AttributeValue'] as $value) {
+                if(!is_array($value)) {
+                    throw new EngineBlock_Corto_XmlToArray_Exception('AttributeValue is not an array');
+                }
+
+                if(!isset($value[self::VALUE_PFX])) {
+                    continue;
+                }
+
                 $res[$attribute['_Name']][] = $value[self::VALUE_PFX];
             }
         }

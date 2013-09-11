@@ -6,6 +6,9 @@ class EngineBlock_Application_DiContainer extends Pimple
     const MAILER = 'mailer';
     const FILTER_COMMAND_FACTORY = 'filterCommandFactory';
     const DATABASE_CONNECTION_FACTORY = 'databaseConnectionFactory';
+    const APPLICATION_CACHE = 'applicationCache';
+    const SERVICE_REGISTRY_CLIENT = 'serviceRegistryClient';
+    const SERVICE_REGISTRY_ADAPTER = 'serviceRegistryAdapter';
     const SERIALIZER = 'serializer';
 
     public function __construct()
@@ -15,6 +18,9 @@ class EngineBlock_Application_DiContainer extends Pimple
         $this->registerMailer();
         $this->registerFilterCommandFactory();
         $this->registerDatabaseConnectionFactory();
+        $this->registerApplicationCache();
+        $this->registerServiceRegistryClient();
+        $this->registerServiceRegistryAdapter();
         $this->registerSerializer();
     }
 
@@ -61,6 +67,57 @@ class EngineBlock_Application_DiContainer extends Pimple
         });
     }
 
+    /**
+     * @return Zend_Cache_Backend_Apc
+     */
+    public function getApplicationCache()
+    {
+        return $this[self::APPLICATION_CACHE];
+    }
+
+    protected function registerApplicationCache()
+    {
+        $this[self::APPLICATION_CACHE] = $this->share(function (EngineBlock_Application_DiContainer $container)
+        {
+            $isApcEnabled = extension_loaded('apc') && ini_get('apc.enabled');
+            if ($isApcEnabled) {
+                return new Zend_Cache_Backend_Apc();
+            }
+        });
+    }
+
+    /**
+     * @return Janus_Client_CacheProxy()
+     */
+    public function getServiceRegistryClient()
+    {
+        return $this[self::SERVICE_REGISTRY_CLIENT];
+    }
+
+    protected function registerServiceRegistryClient()
+    {
+        $this[self::SERVICE_REGISTRY_CLIENT] = $this->share(function (EngineBlock_Application_DiContainer $container)
+        {
+            return new Janus_Client_CacheProxy();
+        });
+    }
+
+    /**
+     * @return EngineBlock_Corto_ServiceRegistry_Adapter()
+     */
+    public function getServiceRegistryAdapter()
+    {
+        return $this[self::SERVICE_REGISTRY_ADAPTER];
+    }
+
+    protected function registerServiceRegistryAdapter()
+    {
+        $this[self::SERVICE_REGISTRY_ADAPTER] = $this->share(function (EngineBlock_Application_DiContainer $container)
+        {
+            return new EngineBlock_Corto_ServiceRegistry_Adapter($container->getServiceRegistryClient());
+        });
+    }
+
     protected function registerSerializer()
     {
         $this[self::SERIALIZER] = $this->share(function (EngineBlock_Application_DiContainer $container)
@@ -73,6 +130,7 @@ class EngineBlock_Application_DiContainer extends Pimple
             return JMS\Serializer\SerializerBuilder::create()
                 ->setDebug(true)
                 ->build();
+
         });
     }
 }

@@ -28,6 +28,7 @@ class EngineBlock_Corto_ProxyServer
 
         'idpMetadataService'                => '/authentication/idp/metadata',
         'spMetadataService'                 => '/authentication/sp/metadata',
+        'singleLogoutService'               => '/logout'
     );
 
     protected $_headers = array();
@@ -44,6 +45,17 @@ class EngineBlock_Corto_ProxyServer
     protected $_sessionLogDefault;
 
     protected $_configs;
+
+
+    /**
+     * @var array
+     *
+     * Remote are all SP's and IdP's except Engineblock itself. Metadata of engineblock as IdP and SP is stored
+     * separately in current entities. This is done EngineBlock can never remove it's own metadata by filtering etc.
+     * It is recommended to use getCurrentEntity() to get Engineblock metadata however using getRemoteEntity() is also possible
+     * since this will proxy current entity information
+     *
+     */
     protected $_entities = array(
         'current'=>array(),
         'hosted'=>array(),
@@ -254,7 +266,8 @@ class EngineBlock_Corto_ProxyServer
         if (!$this->_processingMode && $this->_voContext !== null && $serviceName != "spMetadataService" && !$isImplicitVo) {
             $mappedUri .= '/' . "vo:" . $this->_voContext;
         }
-        if (!$this->_processingMode && $serviceName !== 'idpMetadataService' && $remoteEntityId) {
+        // @todo improve this if construction
+        if (!$this->_processingMode && $serviceName !== 'idpMetadataService' && $serviceName !== 'singleLogoutService' && $remoteEntityId) {
             $mappedUri .= '/' . md5($remoteEntityId);
         }
 
@@ -269,7 +282,11 @@ class EngineBlock_Corto_ProxyServer
     public function getRemoteEntity($entityId)
     {
         if (!isset($this->_entities['remote'][$entityId])) {
-            throw new EngineBlock_Corto_ProxyServer_UnknownRemoteEntityException($entityId);
+            $entity = $this->findRemoteEntityInCurrentEntities($entityId);
+            if (empty($entity)) {
+                throw new EngineBlock_Corto_ProxyServer_UnknownRemoteEntityException($entityId);
+            }
+            return $entity;
         }
         $entity = $this->_entities['remote'][$entityId];
         $entity['EntityId'] = $entityId;
@@ -295,6 +312,21 @@ class EngineBlock_Corto_ProxyServer
         }
         $entity = $this->_entities['current'][$name];
         return $entity;
+    }
+
+    /**
+     * Tries to find the requested in the current entity list
+     *
+     * @param $name string
+     * @return null|array
+     */
+    public function findRemoteEntityInCurrentEntities($name)
+    {
+        foreach($this->_entities['current'] as $currentEntity) {
+            if ($name == $currentEntity['EntityID']) {
+                return $currentEntity;
+            }
+        }
     }
 
     public function getIdpEntityIds()
@@ -362,6 +394,19 @@ class EngineBlock_Corto_ProxyServer
                 break;
             }
         }
+        // Patch Migration BACKLOG-915 Begin
+        foreach ($remoteEntityIds as $remoteEntityId) {
+            if (substr($remoteEntityId, -8) == "/migrate") {
+
+                if (md5(substr($remoteEntityId, 0, -8)) === $remoteIdPMd5) {
+                    $this->_configs['Idp'] = $remoteEntityId;
+                    $this->_configs['TransparentProxy'] = true;
+                    $this->getSessionLog()->info("Re detected pre-selection of $remoteEntityId as IdP, switching to IdP EntityID with Alias");
+                    break;
+                }
+            }
+        }
+        // Patch Migration BACKLOG-915 End
         if (!isset($this->_configs['Idp'])) {
             $this->getSessionLog()->warn("Unable to map remote IdpMD5 '$remoteIdPMd5' to a remote entity!");
         }
@@ -428,7 +473,8 @@ class EngineBlock_Corto_ProxyServer
             EngineBlock_Corto_XmlToArray::PRIVATE_PFX => array(
                 'paramname'         => 'SAMLRequest',
                 'destinationid'     => $idp,
-                'ProtocolBinding'   => $remoteMetaData['SingleSignOnService']['Binding'],
+                // Use the default binding even if more exist
+                'ProtocolBinding'   => $remoteMetaData['SingleSignOnService'][0]['Binding'],
             ),
             '_xmlns:saml'                       => 'urn:oasis:names:tc:SAML:2.0:assertion',
             '_xmlns:samlp'                      => 'urn:oasis:names:tc:SAML:2.0:protocol',
@@ -436,7 +482,8 @@ class EngineBlock_Corto_ProxyServer
             '_ID'                               => $this->getNewId(),
             '_Version'                          => '2.0',
             '_IssueInstant'                     => $this->timeStamp(),
-            '_Destination'                      => $remoteMetaData['SingleSignOnService']['Location'],
+            // Use the default location even if more exist
+            '_Destination'                      => $remoteMetaData['SingleSignOnService'][0]['Location'],
             '_ForceAuthn'                       => ($originalRequest['_ForceAuthn']) ? 'true' : 'false',
             '_IsPassive'                        => ($originalRequest['_IsPassive']) ? 'true' : 'false',
 
@@ -530,6 +577,11 @@ class EngineBlock_Corto_ProxyServer
         }
 
         if (!$this->isInProcessingMode() && $inTransparentMode) {
+            // Patch Migration BACKLOG-915 Begin
+            if (substr($response['__']['OriginalIssuer'],-8) == '/migrate') {
+                $response['__']['OriginalIssuer'] = substr($response['__']['OriginalIssuer'],0,-8);
+            }
+            // Patch Migration BACKLOG-915 End
             $response['saml:Issuer']['__v']                   = $response['__']['OriginalIssuer'];
             $response['saml:Assertion']['saml:Issuer']['__v'] = $response['__']['OriginalIssuer'];
         }

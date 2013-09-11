@@ -4,11 +4,17 @@ class EngineBlock_Corto_Module_Service_AssertionConsumer extends EngineBlock_Cor
 {
     public function serve($serviceName)
     {
-        $receivedResponse = $this->_server->getBindingsModule()->receiveResponse();
-
+        $receivedResponse = $this-> _server->getBindingsModule()->receiveResponse();
         $receivedRequest = $this->_server->getReceivedRequestFromResponse(
             $receivedResponse[EngineBlock_Corto_XmlToArray::ATTRIBUTE_PFX . 'InResponseTo']
         );
+
+        // Flush log if SP or IdP has additional logging enabled
+        $sp = $this->_server->getRemoteEntity(EngineBlock_SamlHelper::extractIssuerFromMessage($receivedRequest));
+        $idp = $this->_server->getRemoteEntity(EngineBlock_SamlHelper::extractIssuerFromMessage($receivedResponse));
+        if (EngineBlock_SamlHelper::doRemoteEntitiesRequireAdditionalLogging($sp, $idp)) {
+            EngineBlock_ApplicationSingleton::getInstance()->getLogInstance()->flushQueue();
+        }
 
         $isDebugRequest = (isset($receivedRequest[EngineBlock_Corto_XmlToArray::PRIVATE_PFX]['Debug']) &&
             $receivedRequest[EngineBlock_Corto_XmlToArray::PRIVATE_PFX]['Debug']);

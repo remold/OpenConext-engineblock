@@ -186,7 +186,8 @@ class EngineBlock_Corto_Adapter
     }
 
     /**
-     * Filter out IdPs that are not allowed to connect to the given SP.
+     * Filter out IdPs that are not allowed to connect to the given SP. We don't filter out
+     * any IdP's if this is explicitly configured for the given in SR.
      *
      * Determines SP based on Authn Request (required).
      *
@@ -195,10 +196,16 @@ class EngineBlock_Corto_Adapter
      */
     protected function _filterRemoteEntitiesByRequestSp(array $entities)
     {
-        return $this->getServiceRegistryAdapter()->filterEntitiesBySp(
-            $entities,
-            $this->_getIssuerSpEntityId()
-        );
+        $issuerSpEntityId = $this->_getIssuerSpEntityId();
+        $entityData = $this->_proxyServer->getRemoteEntity($issuerSpEntityId);
+
+        if (isset($entityData['DisplayUnconnectedIdpsWayf']) && $entityData['DisplayUnconnectedIdpsWayf']) {
+            return $this->getServiceRegistryAdapter()->markEntitiesBySp($entities, $issuerSpEntityId);
+        }
+        else {
+            return $this->getServiceRegistryAdapter()->filterEntitiesBySp($entities, $issuerSpEntityId);
+        }
+
     }
 
     /**
@@ -425,7 +432,7 @@ class EngineBlock_Corto_Adapter
         if (!isset($remoteEntities[$spEntityId])) {
             $remoteEntities[$spEntityId] = array();
         }
-        $remoteEntities[$idpEntityId]['EntityID'] = $spEntityId;
+        $remoteEntities[$spEntityId]['EntityID'] = $spEntityId;
         $remoteEntities[$spEntityId]['certificates'] = array(
             'public'    => $application->getConfiguration()->encryption->key->public,
             'private'   => $application->getConfiguration()->encryption->key->private,
@@ -439,62 +446,77 @@ class EngineBlock_Corto_Adapter
         );
         $remoteEntities[$spEntityId]['RequestedAttributes'] = array(
             array(
-                'Name' => 'urn:mace:dir:attribute-def:mail'
-            ),
-            array(
-                'Name' => 'urn:oid:0.9.2342.19200300.100.1.3',
-                'NameFormat' => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri',
-                'Required' => true,
+                'Name' => 'urn:mace:dir:attribute-def:mail',
+                'NameFormat' => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri'
             ),
 
             // DisplayName (example: John Doe)
             array(
-                'Name' => 'urn:mace:dir:attribute-def:displayName'
-            ),
-            array(
-                'Name' => 'urn:oid:2.16.840.1.113730.3.1.241',
-                'NameFormat' => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri',
-                'Required' => true,
+                'Name' => 'urn:mace:dir:attribute-def:displayName',
+                'NameFormat' => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri'
             ),
 
             // Surname (example: Doe)
             array(
-                'Name' => 'urn:mace:dir:attribute-def:sn'
-            ),
-            array(
-                'Name' => 'urn:oid:2.5.4.4',
-                'NameFormat' => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri',
-                'Required' => true,
+                'Name' => 'urn:mace:dir:attribute-def:sn',
+                'NameFormat' => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri'
             ),
 
             // Given name (example: John)
             array(
-                'Name' => 'urn:mace:dir:attribute-def:givenName'
-            ),
-            array(
-                'Name' => 'urn:oid:2.5.4.42',
+                'Name' => 'urn:mace:dir:attribute-def:givenName',
                 'NameFormat' => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri',
-                'Required' => true,
             ),
 
             // SchachomeOrganization
             array(
-                'Name' => 'urn:mace:terena.org:attribute-def:schacHomeOrganization'
+                'Name' => 'urn:mace:terena.org:attribute-def:schacHomeOrganization',
+                'NameFormat' => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri',
+                'Required' => true
             ),
+
+            // SchachomeOrganizationType
             array(
-                'Name' => 'urn:oid:1.3.6.1.4.1.25178.1.2.9'
-            ,'NameFormat' => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri'
-            , 'Required' => true,
+                'Name' => 'urn:mace:terena.org:attribute-def:schacHomeOrganizationType',
+                'NameFormat' => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri'
             ),
+
 
             // UID (example: john.doe)
             array(
-                'Name' => 'urn:mace:dir:attribute-def:uid'
-            ),
-            array(
-                'Name' => 'urn:oid:0.9.2342.19200300.100.1.1',
+                'Name' => 'urn:mace:dir:attribute-def:uid',
                 'NameFormat' => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri',
-                'Required' => true,
+                'Required' => true
+            ),
+
+            // Cn
+            array(
+                'Name' => 'urn:mace:dir:attribute-def:cn',
+                'NameFormat' => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri'
+            ),
+
+            // EduPersonAffiliation
+            array(
+                'Name' => 'urn:mace:dir:attribute-def:eduPersonAffiliation',
+                'NameFormat' => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri'
+            ),
+
+            // eduPersonEntitlement
+            array(
+                'Name' => 'urn:mace:dir:attribute-def:eduPersonEntitlement',
+                'NameFormat' => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri'
+            ),
+
+            // eduPersonPrincipalName
+            array(
+                'Name' => 'urn:mace:dir:attribute-def:eduPersonPrincipalName',
+                'NameFormat' => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri'
+            ),
+
+            // preferredLanguage
+            array(
+                'Name' => 'urn:mace:dir:attribute-def:preferredLanguage',
+                'NameFormat' => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri'
             )
         );
 
@@ -531,6 +553,7 @@ class EngineBlock_Corto_Adapter
         }
 
         $remoteEntities = $proxyServer->getRemoteEntities();
+
         foreach($this->_remoteEntitiesFilter as $remoteEntityFilter) {
             $remoteEntities = call_user_func_array(
                 $remoteEntityFilter,
@@ -588,10 +611,7 @@ class EngineBlock_Corto_Adapter
 
     public function getServiceRegistryAdapter()
     {
-        // @todo this seems to be called multiple times!
-        return new EngineBlock_Corto_ServiceRegistry_Adapter(
-            new Janus_Client_CacheProxy()
-        );
+        return EngineBlock_ApplicationSingleton::getInstance()->getDiContainer()->getServiceRegistryAdapter();
     }
 
     protected function _processProxyServerResponse()

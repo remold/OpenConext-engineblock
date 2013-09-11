@@ -21,14 +21,17 @@ class EngineBlock_Corto_Module_Service_SingleSignOn extends EngineBlock_Corto_Mo
                     $this->_sendDebugMail($response);
                 }
 
+                $attributes = array();
+                // If attributes exists convert them to internal format
+                if (isset($response['saml:Assertion']['saml:AttributeStatement'][0]['saml:Attribute'])) {
+                    $attributes = $this->_xmlConverter->attributesToArray($response['saml:Assertion']['saml:AttributeStatement'][0]['saml:Attribute']);
+                }
                 $this->_server->sendOutput($this->_server->renderTemplate(
                     'debugidpresponse',
                     array(
                         'idp'       => $this->_server->getRemoteEntity($response['saml:Issuer']['__v']),
                         'response'  => $response,
-                        'attributes'=> $this->_xmlConverter->attributesToArray(
-                            $response['saml:Assertion']['saml:AttributeStatement'][0]['saml:Attribute']
-                        ),
+                        'attributes'=> $attributes
                     )
                 ));
                 return;
@@ -48,22 +51,15 @@ class EngineBlock_Corto_Module_Service_SingleSignOn extends EngineBlock_Corto_Mo
             );
         }
 
-        $requestIssuer = $request['saml:Issuer'][EngineBlock_Corto_XmlToArray::VALUE_PFX];
-        $remoteEntity = $this->_server->getRemoteEntity($requestIssuer);
-        if (!empty($remoteEntity['AdditionalLogging'])) {
-            $queue = EngineBlock_ApplicationSingleton::getInstance()
-                ->getLogInstance()
-                ->getQueueWriter();
-
-            $queue->getStorage()
-                  ->setForceFlush(true);
-
-            $queue->flush();
+        // Flush log if SP or IdP has additional logging enabled
+        $sp = $this->_server->getRemoteEntity(EngineBlock_SamlHelper::extractIssuerFromMessage($request));
+        if (EngineBlock_SamlHelper::doRemoteEntitiesRequireAdditionalLogging($sp)) {
+            EngineBlock_ApplicationSingleton::getInstance()->getLogInstance()->flushQueue();
         }
 
         // validate custom acs-location (only for unsolicited, normal logins
         //  fall back to default ACS location instead of showing error page)
-        if ($isUnsolicited && !$this->_verifyAcsLocation($request, $remoteEntity)) {
+        if ($isUnsolicited && !$this->_verifyAcsLocation($request, $sp)) {
             throw new EngineBlock_Corto_Exception_InvalidAcsLocation(
                 'Unknown or invalid ACS location requested'
             );
@@ -88,6 +84,7 @@ class EngineBlock_Corto_Module_Service_SingleSignOn extends EngineBlock_Corto_Mo
 
         // Get all registered Single Sign On Services
         $candidateIDPs = $this->_server->getIdpEntityIds();
+
         $posOfOwnIdp = array_search($this->_server->getUrl('idpMetadataService'), $candidateIDPs);
         if ($posOfOwnIdp !== false) {
             unset($candidateIDPs[$posOfOwnIdp]);
@@ -112,12 +109,7 @@ class EngineBlock_Corto_Module_Service_SingleSignOn extends EngineBlock_Corto_Mo
                 return;
             }
             else {
-                $output = $this->_server->renderTemplate(
-                    'noidps',
-                    array(
-                    ));
-                $this->_server->sendOutput($output);
-                return;
+                throw new EngineBlock_Corto_Module_Service_SingleSignOn_NoIdpsException('No Idps found');
             }
         }
         // Exactly 1 candidate found, send authentication request to the first one
@@ -395,6 +387,11 @@ class EngineBlock_Corto_Module_Service_SingleSignOn extends EngineBlock_Corto_Mo
 
             $remoteEntities = $this->_server->getRemoteEntities();
             $metadata = ($remoteEntities[$idpEntityId]);
+
+            if ($metadata['isHidden']) {
+                continue;
+            }
+
             $additionalInfo = EngineBlock_Log_Message_AdditionalInfo::create()->setIdp($idpEntityId);
 
             if (isset($metadata['DisplayName']['nl'])) {
@@ -426,7 +423,7 @@ class EngineBlock_Corto_Module_Service_SingleSignOn extends EngineBlock_Corto_Mo
                     : EngineBlock_View::staticUrl() . '/media/idp-logo-not-found.png',
                 'Keywords' => isset($metadata['Keywords']['en']) ? explode(' ', $metadata ['Keywords']['en'])
                     : isset($metadata['Keywords']['nl']) ? explode(' ', $metadata['Keywords']['nl']) : 'Undefined',
-                'Access' => '1',
+                'Access' => ((isset($metadata['Access']) && $metadata['Access']) ? '1' : '0'),
                 'ID' => md5($idpEntityId),
                 'EntityId' => $idpEntityId,
             );
@@ -449,9 +446,12 @@ class EngineBlock_Corto_Module_Service_SingleSignOn extends EngineBlock_Corto_Mo
             }
 
             $idp = $this->_server->getRemoteEntity($response['saml:Issuer']['__v']);
-            $attributes = $this->_xmlConverter->attributesToArray(
-                $response['saml:Assertion']['saml:AttributeStatement'][0]['saml:Attribute']
-            );
+
+            $attributes = array();
+            // If attributes exists convert them to internal format
+            if (isset($response['saml:Assertion']['saml:AttributeStatement'][0]['saml:Attribute'])) {
+                $attributes = $this->_xmlConverter->attributesToArray($response['saml:Assertion']['saml:AttributeStatement'][0]['saml:Attribute']);
+            }
             $output = $this->_server->renderTemplate('debugidpmail', array(
                     'idp'       => $idp,
                     'response'  => $response,

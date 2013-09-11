@@ -36,26 +36,36 @@ class Authentication_Controller_ServiceProvider extends EngineBlock_Controller_A
             $proxyServer->consumeAssertion();
         }
         catch (EngineBlock_Corto_Exception_UserNotMember $e) {
-            $application->getLogInstance()->notice('User not a member error');
-            $application->getHttpResponse()->setRedirectUrl('/authentication/feedback/vomembershiprequired');
+            $application->handleExceptionWithFeedback($e,
+                '/authentication/feedback/vomembershiprequired');
         }
         catch (EngineBlock_Corto_Module_Bindings_UnableToReceiveMessageException $e) {
-            $application->getLogInstance()->notice('SingleSignOn: Unable to receive SAMLResponse');
-            $application->getHttpResponse()->setRedirectUrl('/authentication/feedback/unable-to-receive-message');
+            $application->handleExceptionWithFeedback($e,
+                '/authentication/feedback/unable-to-receive-message');
         }
         catch (EngineBlock_Corto_Exception_UnknownIssuer $e) {
-            $application->getLogInstance()->notice($e->getMessage(), EngineBlock_Log_Message_AdditionalInfo::createFromException($e));
-            $application->getHttpResponse()->setRedirectUrl('/authentication/feedback/unknown-issuer?entity-id='.urlencode($e->getEntityId()).'&destination='.urlencode($e->getDestination()));
+            $application->handleExceptionWithFeedback($e,
+                '/authentication/feedback/unknown-issuer?entity-id='.urlencode($e->getEntityId()).'&destination='.urlencode($e->getDestination()));
         }
         catch (EngineBlock_Corto_Exception_MissingRequiredFields $e) {
-            $application->getLog()->notice($e->getMessage(), EngineBlock_Log_Message_AdditionalInfo::createFromException($e));
-            $application->getHttpResponse()->setRedirectUrl('/authentication/feedback/missing-required-fields');
+            $application->handleExceptionWithFeedback($e,
+                '/authentication/feedback/missing-required-fields');
         }
         catch (EngineBlock_Attributes_Manipulator_CustomException $e) {
-            $application->reportError($e);
-
             $_SESSION['feedback_custom'] = $e->getFeedback();
-            $application->getHttpResponse()->setRedirectUrl('/authentication/feedback/custom');
+            $application->handleExceptionWithFeedback($e,
+                '/authentication/feedback/custom');
+        } catch (EngineBlock_Corto_Module_Bindings_UnsupportedBindingException $e) {
+            $application->handleExceptionWithFeedback($e,
+                '/authentication/feedback/invalid-acs-binding');
+        } catch (EngineBlock_Corto_Exception_ReceivedErrorStatusCode $e) {
+            // Add extra feedback info
+            $application->handleExceptionWithFeedback($e,
+                '/authentication/feedback/received-error-status-code',
+                $e->getFeedbackInfo());
+        } catch (EngineBlock_Corto_Module_Bindings_VerificationException $e) {
+            $application->handleExceptionWithFeedback($e,
+                '/authentication/feedback/received-invalid-response');
         }
     }
 
@@ -70,18 +80,17 @@ class Authentication_Controller_ServiceProvider extends EngineBlock_Controller_A
             $proxyServer->processConsent();
         }
         catch (EngineBlock_Corto_Module_Services_SessionLostException $e) {
-            $application->getLogInstance()->notice($e->getMessage(), EngineBlock_Log_Message_AdditionalInfo::createFromException($e));
-            $application->getHttpResponse()->setRedirectUrl('/authentication/feedback/session-lost');
+            $application->handleExceptionWithFeedback($e,
+                '/authentication/feedback/session-lost');
         }
         catch (EngineBlock_Corto_Exception_UserNotMember $e) {
-            $application->getLogInstance()->notice($e->getMessage(), EngineBlock_Log_Message_AdditionalInfo::createFromException($e));
-            $application->getHttpResponse()->setRedirectUrl('/authentication/feedback/vomembershiprequired');
+            $application->handleExceptionWithFeedback($e,
+                '/authentication/feedback/vomembershiprequired');
         }
         catch (EngineBlock_Attributes_Manipulator_CustomException $e) {
-            $application->reportError($e);
-
             $_SESSION['feedback_custom'] = $e->getFeedback();
-            $application->getHttpResponse()->setRedirectUrl('/authentication/feedback/custom');
+            $application->handleExceptionWithFeedback($e,
+                '/authentication/feedback/custom');
         }
     }
 
@@ -116,12 +125,11 @@ class Authentication_Controller_ServiceProvider extends EngineBlock_Controller_A
             $proxyServer->debugSingleSignOn();
         }
         catch (EngineBlock_Corto_Module_Services_SessionLostException $e) {
-            $application->reportError($e);
-            $application->getHttpResponse()->setRedirectUrl('/authentication/feedback/session-lost');
+            $application->handleExceptionWithFeedback($e,
+                '/authentication/feedback/session-lost');
         }
         catch (EngineBlock_Corto_Exception_UnknownIssuer $e) {
-            $application->reportError($e);
-            $application->getHttpResponse()->setRedirectUrl(
+            $application->handleExceptionWithFeedback($e,
                 '/authentication/feedback/unknown-issuer?entity-id=' . urlencode($e->getEntityId()) .
                     '&destination=' . urlencode($e->getDestination())
             );

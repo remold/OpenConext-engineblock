@@ -1,13 +1,11 @@
 <?php
 
-require __DIR__ . '/Autoloader.php';
-require __DIR__ . '/Bootstrapper/Exception.php';
-
 class EngineBlock_Application_Bootstrapper
 {
     const CONFIG_FILE_DEFAULT       = 'configs/application.ini';
     // @todo correct typo
     const CONFIG_FILE_ENVIORNMENT   = '/etc/surfconext/engineblock.ini';
+    const P3P_HEADER = 'CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"';
 
     /**
      * @var EngineBlock_ApplicationSingleton
@@ -40,8 +38,6 @@ class EngineBlock_Application_Bootstrapper
             return $this;
         }
 
-        $this->_bootstrapAutoLoading();
-
         $this->_setEnvironmentIdByEnvironment();
 
         $this->_bootstrapDiContainer();
@@ -68,58 +64,33 @@ class EngineBlock_Application_Bootstrapper
     protected function _bootstrapDiContainer() {
         if (ENGINEBLOCK_ENV == 'testing') {
             $this->_application->setDiContainer(new EngineBlock_Application_TestDiContainer());
+        } elseif (ENGINEBLOCK_ENV == 'functional-testing') {
+            $this->_application->setDiContainer(new EngineBlock_Application_FunctionalTestDiContainer());
         } else {
             $this->_application->setDiContainer(new EngineBlock_Application_DiContainer());
         }
     }
 
-    protected function _bootstrapAutoLoading()
-    {
-        require_once ENGINEBLOCK_FOLDER_ROOT . "vendor/autoload.php";
-
-        if (!function_exists('spl_autoload_register')) {
-            throw new EngineBlock_Application_Bootstrapper_Exception(
-                'SPL Autoload not available! Please use PHP > v5.1.2',
-                EngineBlock_Exception::CODE_ALERT
-            );
-        }
-
-        $autoLoader = new EngineBlock_Application_Autoloader();
-        spl_autoload_register(array($autoLoader, 'load'));
-    }
-
     protected function _bootstrapConfiguration()
     {
-        $this->_application->setConfiguration(
-            $this->_getConfigurationLoader(
-                $this->_getAllConfigsContent()
-            )
+        $configProxy = new EngineBlock_Config_CacheProxy(
+            $this->_getAllConfigFiles(),
+            $this->_application->getDiContainer()->getApplicationCache()
         );
+        $this->_application->setConfiguration($configProxy->load());
     }
 
     /**
-     * Concatenate the INI files from /application/configs/application.ini
-     * and from /etc/surfconext/engineblock.ini and return the result as a string.
+     * return a list of config files (default and environment overrides) that shoud be loaded
      *
-     * @return string
+     * @return array
      */
-    protected function _getAllConfigsContent()
+    protected function _getAllConfigFiles()
     {
-        $configFiles = array(
+        return array(
             ENGINEBLOCK_FOLDER_APPLICATION . self::CONFIG_FILE_DEFAULT,
             self::CONFIG_FILE_ENVIORNMENT,
         );
-
-        $configFileContents = "";
-        foreach ($configFiles as $configFile) {
-            $configFileContents .= file_get_contents($configFile) . PHP_EOL;
-        }
-        return $configFileContents;
-    }
-
-    protected function _getConfigurationLoader($configContent)
-    {
-        return new EngineBlock_Config_Ini($configContent);
     }
 
     protected function _setEnvironmentIdByDetection()
@@ -205,6 +176,8 @@ class EngineBlock_Application_Bootstrapper
 
         $response = new EngineBlock_Http_Response();
         $response->setHeader('Strict-Transport-Security', 'max-age=15768000; includeSubDomains');
+        // workaround, P3P is needed to support iframes like iframe gadgets in portals
+        $response->setHeader('P3P', self::P3P_HEADER);
         $this->_application->setHttpResponse($response);
     }
 
@@ -256,18 +229,16 @@ class EngineBlock_Application_Bootstrapper
 
     protected function _bootstrapTranslations()
     {
-        $translate = new Zend_Translate(
-            'Array',
-            ENGINEBLOCK_FOLDER_ROOT . '/languages/en.php',
-            'en'
+        $translationFiles = array(
+            'en' => ENGINEBLOCK_FOLDER_ROOT . 'languages/en.php',
+            'nl' => ENGINEBLOCK_FOLDER_ROOT . 'languages/nl.php'
+        );
+        $translationCacheProxy = new EngineBlock_Translate_CacheProxy(
+            $translationFiles,
+            $this->_application->getDiContainer()->getApplicationCache()
         );
 
-        $translate->addTranslation(
-            array(
-                'content' => ENGINEBLOCK_FOLDER_ROOT . '/languages/nl.php',
-                'locale'  => 'nl'
-            )
-        );
+        $translate = $translationCacheProxy->load();
 
         // If the URL has &lang=nl in it or the lang var is posted, or a lang cookie was set, then use that locale
         $httpRequest = $this->_application->getHttpRequest();
