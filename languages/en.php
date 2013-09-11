@@ -15,6 +15,15 @@ return array(
     'authentication_urls'   => 'Authentication URLs',
     'timestamp'             => 'Timestamp',
 
+    // Feedback
+    'requestId'             => 'Unique Request Id',
+    'identityProvider'      => 'Identity Provider',
+    'serviceProvider'       => 'Service Provider',
+    'userAgent'             => 'User Agent',
+    'ipAddress'             => 'Ip Address',
+    'statusCode'            => 'Status Code',
+    'statusMessage'         => 'Status Message',
+
     //WAYF
     'idp_selection_title'       => 'Identity Provider Selection - %s',
     'idp_selection_subheader'   => 'Login via your institution',
@@ -73,7 +82,7 @@ If you have any questions about your privacy and the policy applied, please visi
     'name'                  => 'Name',
     'name_error'            => 'Enter your name',
     'email'                 => 'Email',
-    'email_error'           => 'Enter your email address',
+    'email_error'           => 'Enter your (correct) email address',
     'comment'               => 'Comment',
     'comment_error'         => 'Enter a comment',
     'cancel'                => 'Cancel',
@@ -211,37 +220,19 @@ If you want to use this application you have to:<br />
     'error_no_message'              => 'Error - No message received..',
     'error_no_message_desc'         => 'We were expecting a message, but did not get one? Something went wrong. Please try again.',
     'error_invalid_acs_location'    => 'The given "Assertion Consumer Service" is unknown or invalid.',
+    'error_invalid_acs_binding'     => 'Invalid ACS Binding Type',
+    'error_invalid_acs_binding_desc'     => 'The provided or configured "Assertion Consumer Service" Binding Type is unknown or invalid.',
     'error_unknown_service_provider'          => 'Error - Cannot provide metadata for EntityID \'%s\'',
     'error_unknown_service_provider_desc'     => '<p>
         A Service Provider with the EntityID you have provided could not be found. If you feel this is an error please contact the SURFconext helpdesk at <a href="mailto:help@surfconext.nl">help@surfconext.nl</a>.
-        <table class="error-table">
-            <tbody>
-            <tr><td width="100px"><strong>EntityID</strong></td><td class="word-wrap"><i>%s</i></td></tr>
-            <tr><td width="100px"><strong>Timestamp</strong></td><td>%s</td></tr>
-            </tr>
-            </tbody>
-        </table>
     </p>',
 
     'error_unknown_issuer'          => 'Error - Unknown application..',
     'error_unknown_issuer_desc'     => '<p>
         This application is not available using SURFconext. Please notify the provider of this service and provide them with the following information:
-        <table class="error-table">
-            <tbody>
-            <tr><td width="100px"><strong>EntityID</strong></td><td class="word-wrap"><i>%s</i></td></tr>
-            <tr><td width="100px"><strong>DestinationID</strong></td><td class="word-wrap"><i>%s</i></td></tr>
-            <tr><td width="100px"><strong>Timestamp</strong></td><td>%s</td></tr>
-            </tr>
-            </tbody>
-        </table>
-        <br />
-        If this doesn\'t solve your problem, please visit <a href="https://wiki.surfnetlabs.nl/display/conextsupport/">the SURFconext support page</a>
-        or contact the SURFconext team at <a href="mailto:help@surfconext.nl">help@surfconext.nl</a>.
-        <br /><br />
     </p>',
     'error_vo_membership_required'      => 'Membership of a Virtual Organisation required',
-    'error_vo_membership_required_desc' => 'You have successfully authenticated at your Identity Provider, however in order to use this service you have to be a member of a Virtual Organisation. Please visit <a href="https://wiki.surfnetlabs.nl/display/conextsupport/">the SURFconext support page</a>
-        or contact the SURFconext helpdesk at <a href="mailto:help@surfconext.nl">help@surfconext.nl</a> if you have any questions.',
+    'error_vo_membership_required_desc' => 'You have successfully authenticated at your Identity Provider, however in order to use this service you have to be a member of a Virtual Organisation.',
     'error_generic'                     => 'Error - An error occurred.',
     'error_generic_desc'                => '<p>
         It is not possible to sign in. Please try again.
@@ -254,7 +245,7 @@ If you want to use this application you have to:<br />
         Please contact your institution with the information stated below.
     </p>
     <p>
-        Login failed because the institution\'s identity provider did not provide SURFconext with the following required attribute(s):
+        Login failed because the institution\'s identity provider did not provide SURFconext with one or more of the following required attribute(s):
         <ul>
             <li>UID</li>
             <li>schacHomeOrganization</li>
@@ -265,6 +256,14 @@ If you want to use this application you have to:<br />
         The external group provider <b>%s</b> reported an error. </p>
         <p>Please contact the SURFconext team at <a href="mailto:help@surfconext.nl">help@surfconext.nl</a>.
        </p>',
+    'error_received_error_status_code'     => 'Error - Idp error',
+    'error_received_error_status_code_desc'=> '<p>
+        Your Identity Provider sent an authentication response with an error status code.
+    </p>',
+    'error_received_invalid_response'     => 'Error - Invalid Idp response',
+    'error_received_status_code_desc'=> '<p>
+        Your Identity Provider sent an authentication response that was invalid.
+    </p>',
 
     /**
      * %1 AttributeName
@@ -273,6 +272,8 @@ If you want to use this application you have to:<br />
      * @url http://nl3.php.net/sprintf
      */
     'error_attribute_validator_type_uri'            => '\'%3$s\' is not a valid URI',
+    'error_attribute_validator_type_urn'            => '\'%3$s\' is not a valid URN',
+    'error_attribute_validator_type_url'            => '\'%3$s\' is not a valid URL',
     'error_attribute_validator_type_hostname'       => '\'%3$s\' is not a valid hostname',
     'error_attribute_validator_type_emailaddress'   => '\'%3$s\' is not a valid email address',
     'error_attribute_validator_minlength'           => '\'%3$s\' is not long enough (minimum is %2$d characters)',
@@ -292,4 +293,8 @@ If you want to use this application you have to:<br />
                                         use the "Mail to surfconext-beheer" button below
                                         to mail the information in this screen.',
     'idp_debugging_mail_button' => 'Mail to surfconext-beheer',
+
+    // Logout
+    'logout_description' => 'This application uses centralized log in, which provides single sign on for several applications. To be sure your log out is 100%% secure you should close your browser completely.',
+    'logout_information_link' => '<a href="https://wiki.surfnetlabs.nl/display/conextsupport/Log+out+SURFconext">More information about secure log out</a>',
 );

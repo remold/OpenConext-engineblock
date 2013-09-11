@@ -22,21 +22,21 @@
  * @copyright Copyright © 2010-2011 SURFnet SURFnet bv, The Netherlands (http://www.surfnet.nl)
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
-define('ENGINEBLOCK_FOLDER_ROOT'       , dirname(__FILE__) . '/../../');
 
-require_once ENGINEBLOCK_FOLDER_ROOT . 'vendor/lucasvanlierop/php-profiler/lib/Profiler.php';
-\Lvl\Profiler::markBootstrapStart();
+define('ENGINEBLOCK_FOLDER_ROOT'       , realpath(__DIR__ . '/../../') . '/');
 
 define('ENGINEBLOCK_FOLDER_LIBRARY'    , ENGINEBLOCK_FOLDER_ROOT . 'library/');
 define('ENGINEBLOCK_FOLDER_APPLICATION', ENGINEBLOCK_FOLDER_ROOT . 'application/');
 define('ENGINEBLOCK_FOLDER_MODULES'    , ENGINEBLOCK_FOLDER_APPLICATION . 'modules/');
+define('ENGINEBLOCK_FOLDER_VENDOR'    , ENGINEBLOCK_FOLDER_ROOT . 'vendor/');
 
-define('LIBRARY_PATH', ENGINEBLOCK_FOLDER_LIBRARY);
+require_once ENGINEBLOCK_FOLDER_VENDOR . 'lucasvanlierop/php-profiler/lib/Profiler.php';
+\Lvl\Profiler::markBootstrapStart();
 
-set_include_path(ENGINEBLOCK_FOLDER_LIBRARY . PATH_SEPARATOR . get_include_path());
-
-require __DIR__ . '/Exception.php';
-require __DIR__ . '/Application/Bootstrapper.php';
+// @todo this only necessary for code which bypasses autoloading like Zend_Translate
+$includePath = get_include_path();
+$includePath = ENGINEBLOCK_FOLDER_VENDOR .  'zendframework/zendframework1/library' . PATH_SEPARATOR . $includePath;
+set_include_path($includePath);
 
 class EngineBlock_ApplicationSingleton
 {
@@ -95,7 +95,6 @@ class EngineBlock_ApplicationSingleton
      */
     protected $_diContainer;
 
-
     /**
      * @var \Lvl\Profiler
      */
@@ -146,9 +145,10 @@ class EngineBlock_ApplicationSingleton
 
     /**
      * @param Exception $exception
+     * @param string $messageSuffix
      * @return bool
      */
-    public function reportError(Exception $exception)
+    public function reportError(Exception $exception, $messageSuffix = '')
     {
         $log = $this->getLogInstance();
         if (!$log) {
@@ -176,6 +176,10 @@ class EngineBlock_ApplicationSingleton
             $message = 'Exception without message "' . get_class($exception) . '"';
         }
 
+        if ($messageSuffix) {
+            $message .= ' | ' . $messageSuffix;
+        }
+
         // log exception
         $log->log(
             $message,
@@ -183,10 +187,61 @@ class EngineBlock_ApplicationSingleton
             $additionalInfo
         );
 
+        // Store some valuable debug info in session so it can be displayed on feedback pages
+        $queue = $log->getQueueWriter()->getStorage()->getQueue();
+        $lastEvent = end($queue);
+        $_SESSION['feedbackInfo'] = $this->collectFeedbackInfo($lastEvent);
+
         // flush all messages in queue, something went wrong!
         $log->getQueueWriter()->flush('error caught');
 
         return true;
+    }
+
+    /**
+     * @param array $logEvent
+     * @return array
+     */
+    private function collectFeedbackInfo(array $logEvent)
+    {
+        $feedbackInfo = array();
+        $feedbackInfo['timestamp'] = $logEvent['timestamp'];
+        $feedbackInfo['requestId'] = $logEvent['requestid'];
+        $feedbackInfo['userAgent'] = $_SERVER['HTTP_USER_AGENT'];
+        $feedbackInfo['ipAddress'] = $_SERVER['REMOTE_ADDR'];
+
+        // @todo  reset this when login is succesful
+        // Find the current identity provider
+        if (isset($_SESSION['currentServiceProvider'])) {
+            $feedbackInfo['serviceProvider'] = $_SESSION['currentServiceProvider'];
+        }
+
+        // @todo  reset this when login is succesful
+        // Find the current identity provider
+        if (isset($_SESSION['currentIdentityProvider'])) {
+            $feedbackInfo['identityProvider'] = $_SESSION['currentIdentityProvider'];
+        }
+
+        return $feedbackInfo;
+    }
+
+    /**
+     * Logs exception and redirects user to feedback page
+     *
+     * @param Exception $exception
+     * @param string $feedbackUrl Url to which the user will be redirected
+     * @param array $feedbackInfo Optional feedback info in name/value format which will be shown on feedback page
+     */
+    public function handleExceptionWithFeedback(
+        Exception $exception,
+        $feedbackUrl,
+        $feedbackInfo = array()
+    )
+    {
+        $messageSuffix = '-> Redirecting to feedback page';
+        $this->reportError($exception, $messageSuffix);
+        $_SESSION['feedbackInfo'] = array_merge($feedbackInfo, $_SESSION['feedbackInfo']);
+        $this->getHttpResponse()->setRedirectUrl($feedbackUrl);
     }
 
     /**

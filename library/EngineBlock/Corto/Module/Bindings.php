@@ -73,6 +73,9 @@ class EngineBlock_Corto_Module_Bindings extends EngineBlock_Corto_Module_Abstrac
     {
         $request = $this->_receiveMessage(self::KEY_REQUEST);
 
+        // Remember idp for debugging
+        $_SESSION['currentServiceProvider'] = $request['saml:Issuer']['__v'];
+
         $log = $this->_server->getSessionLog();
         $log->attach($request, 'Request')
             ->info('Received request');
@@ -98,6 +101,9 @@ class EngineBlock_Corto_Module_Bindings extends EngineBlock_Corto_Module_Abstrac
             $response[EngineBlock_Corto_XmlToArray::PRIVATE_PFX]['Binding'] === "INTERNAL") {
             return $response;
         }
+
+        // Remember idp for debugging
+        $_SESSION['currentIdentityProvider'] = $response['saml:Issuer']['__v'];
 
         $this->_decryptResponse($response);
         $this->_verifyResponse($response);
@@ -773,9 +779,24 @@ class EngineBlock_Corto_Module_Bindings extends EngineBlock_Corto_Module_Abstrac
         return (isset($this->_bindings[$binding]));
     }
 
+    /**
+     * Redirects a message
+     *
+     * Note response redirecting is currently broken for response redirection to fix this do the following:
+     * - Refactor the signing related parts so that $mustSign is also true for redirect responses
+     * - Configure correct signing algorithm: 'http://www.w3.org/2000/09/xmldsig#rsa-sha1'
+     * - Change signature removal so that the signature is removed from the assertion instead of from the message
+     *
+     * @param array $message
+     * @param array $remoteEntity
+     */
     protected function _sendHTTPRedirect(array $message, $remoteEntity)
     {
         $messageType = $message['__']['paramname'];
+
+        if ($messageType === self::KEY_RESPONSE) {
+            throw new EngineBlock_Corto_Module_Bindings_UnsupportedBindingException('Redirecting response is not supported');
+        }
 
         // Determine if we should sign the message
         $wantRequestsSigned = (
