@@ -84,6 +84,7 @@ class EngineBlock_Corto_Module_Service_SingleSignOn extends EngineBlock_Corto_Mo
 
         // Get all registered Single Sign On Services
         $candidateIDPs = $this->_server->getIdpEntityIds();
+
         $posOfOwnIdp = array_search($this->_server->getUrl('idpMetadataService'), $candidateIDPs);
         if ($posOfOwnIdp !== false) {
             unset($candidateIDPs[$posOfOwnIdp]);
@@ -108,12 +109,7 @@ class EngineBlock_Corto_Module_Service_SingleSignOn extends EngineBlock_Corto_Mo
                 return;
             }
             else {
-                $output = $this->_server->renderTemplate(
-                    'noidps',
-                    array(
-                    ));
-                $this->_server->sendOutput($output);
-                return;
+                throw new EngineBlock_Corto_Module_Service_SingleSignOn_NoIdpsException('No Idps found');
             }
         }
         // Exactly 1 candidate found, send authentication request to the first one
@@ -391,6 +387,11 @@ class EngineBlock_Corto_Module_Service_SingleSignOn extends EngineBlock_Corto_Mo
 
             $remoteEntities = $this->_server->getRemoteEntities();
             $metadata = ($remoteEntities[$idpEntityId]);
+
+            if ($metadata['isHidden']) {
+                continue;
+            }
+
             $additionalInfo = EngineBlock_Log_Message_AdditionalInfo::create()->setIdp($idpEntityId);
 
             if (isset($metadata['DisplayName']['nl'])) {
@@ -419,10 +420,10 @@ class EngineBlock_Corto_Module_Service_SingleSignOn extends EngineBlock_Corto_Mo
                 'Name_nl' => $nameNl,
                 'Name_en' => $nameEn,
                 'Logo' => isset($metadata['Logo']['URL']) ? $metadata['Logo']['URL']
-                    : EngineBlock_View::staticUrl() . '/media/idp-logo-not-found.png',
+                    : '/media/idp-logo-not-found.png',
                 'Keywords' => isset($metadata['Keywords']['en']) ? explode(' ', $metadata ['Keywords']['en'])
                     : isset($metadata['Keywords']['nl']) ? explode(' ', $metadata['Keywords']['nl']) : 'Undefined',
-                'Access' => '1',
+                'Access' => ((isset($metadata['Access']) && $metadata['Access']) ? '1' : '0'),
                 'ID' => md5($idpEntityId),
                 'EntityId' => $idpEntityId,
             );

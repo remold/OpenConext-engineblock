@@ -1,8 +1,5 @@
 <?php
 
-require __DIR__ . '/Autoloader.php';
-require __DIR__ . '/Bootstrapper/Exception.php';
-
 class EngineBlock_Application_Bootstrapper
 {
     const CONFIG_FILE_DEFAULT       = 'configs/application.ini';
@@ -41,8 +38,6 @@ class EngineBlock_Application_Bootstrapper
             return $this;
         }
 
-        $this->_bootstrapAutoLoading();
-
         $this->_setEnvironmentIdByEnvironment();
 
         $this->_bootstrapDiContainer();
@@ -69,24 +64,11 @@ class EngineBlock_Application_Bootstrapper
     protected function _bootstrapDiContainer() {
         if (ENGINEBLOCK_ENV == 'testing') {
             $this->_application->setDiContainer(new EngineBlock_Application_TestDiContainer());
+        } elseif (ENGINEBLOCK_ENV == 'functional-testing') {
+            $this->_application->setDiContainer(new EngineBlock_Application_FunctionalTestDiContainer());
         } else {
             $this->_application->setDiContainer(new EngineBlock_Application_DiContainer());
         }
-    }
-
-    protected function _bootstrapAutoLoading()
-    {
-        require_once ENGINEBLOCK_FOLDER_ROOT . "vendor/autoload.php";
-
-        if (!function_exists('spl_autoload_register')) {
-            throw new EngineBlock_Application_Bootstrapper_Exception(
-                'SPL Autoload not available! Please use PHP > v5.1.2',
-                EngineBlock_Exception::CODE_ALERT
-            );
-        }
-
-        $autoLoader = new EngineBlock_Application_Autoloader();
-        spl_autoload_register(array($autoLoader, 'load'));
     }
 
     protected function _bootstrapConfiguration()
