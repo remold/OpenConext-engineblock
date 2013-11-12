@@ -1,5 +1,5 @@
 #!/bin/sh
-ROOT_DIR=$(realpath `dirname $0`/../../)
+ROOT_DIR="$(cd -P "$(dirname $0)/../../" && pwd)"
 
 # Applies various changes to shindig, this should be ran when composer has installed it in vendor
 
@@ -33,4 +33,4 @@ rm -rf vendor/apache/shindig/build.xml \
 cd vendor/apache
 find . -name '*.php' \
 -print0  | \
-xargs -0 sed --regexp-extended --in-place "s#require(_once)?\ '[^;]*;##g"
+xargs -0 sed -E -i -e "s#require(_once)?\ '[^;]*;##g"

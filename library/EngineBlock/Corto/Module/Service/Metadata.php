@@ -22,16 +22,8 @@ class EngineBlock_Corto_Module_Service_Metadata extends EngineBlock_Corto_Module
         $slLocation = $this->_server->getUrl('singleLogoutService');
         $slServiceReplacer->replace($entityDetails, $slLocation);
 
-        try {
-            // See if an sp-entity-id was specified for which we need to use alternate keys (key rollover)
-            $alternateKeys = $this->_getAlternateKeys();
-        } catch (EngineBlock_Corto_ProxyServer_UnknownRemoteEntityException $e) {
-            $spEntityId = EngineBlock_ApplicationSingleton::getInstance()->getHttpRequest()->getQueryParameter('sp-entity-id');
-            $this->_server->redirect(
-                '/authentication/feedback/unknown-service-provider?entity-id=' . urlencode($spEntityId),
-                "Unknown SP!");
-            return;
-        }
+         // See if an sp-entity-id was specified for which we need to use alternate keys (key rollover)
+         $alternateKeys = $this->_getAlternateKeys();
 
         if ($alternateKeys) {
             $entityDetails['certificates'] = $alternateKeys;
@@ -40,16 +32,10 @@ class EngineBlock_Corto_Module_Service_Metadata extends EngineBlock_Corto_Module
         // Map the IdP configuration to a Corto XMLToArray structured document array
         $mapper = new EngineBlock_Corto_Mapper_Metadata_EdugainDocument(
             $this->_server->getNewId(),
-            $this->_server->timeStamp($this->_server->getConfig('metadataValidUntilSeconds', 86400))
+            $this->_server->timeStamp($this->_server->getConfig('metadataValidUntilSeconds', 86400)),
+            false
         );
         $document = $mapper->setEntity($entityDetails)->map();
-
-        /**
-         * https://jira.surfconext.nl/jira/browse/BACKLOG-960
-         *
-         * This comment should only in metadata for edugain metadata
-         */
-        unset($document[EngineBlock_Corto_XmlToArray::COMMENT_PFX]);
 
         // Sign the document
         $document = $this->_server->sign(
@@ -74,22 +60,6 @@ class EngineBlock_Corto_Module_Service_Metadata extends EngineBlock_Corto_Module
         //$this->_server->sendHeader('Content-Type', 'application/samlmetadata+xml');
         $this->_server->sendHeader('Content-Type', 'application/xml');
         $this->_server->sendOutput($xml);
-    }
-
-    /**
-     * Disable VO context and do something, then reinstate the VO context.
-     *
-     * @param callable $callbackFn Callback function to execute when no VO Context is set
-     * @todo does not seem to be used, remove?
-     */
-    protected function _withNoVoContext($callbackFn)
-    {
-        $voContext = $this->_server->getVirtualOrganisationContext();
-        $this->_server->setVirtualOrganisationContext(null);
-
-        $callbackFn();
-
-        $this->_server->setVirtualOrganisationContext($voContext);
     }
 
     /**

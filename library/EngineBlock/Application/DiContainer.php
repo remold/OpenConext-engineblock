@@ -9,7 +9,9 @@ class EngineBlock_Application_DiContainer extends Pimple
     const APPLICATION_CACHE = 'applicationCache';
     const SERVICE_REGISTRY_CLIENT = 'serviceRegistryClient';
     const SERVICE_REGISTRY_ADAPTER = 'serviceRegistryAdapter';
+    const ASSET_MANAGER = 'assetManager';
     const SERIALIZER = 'serializer';
+    
 
     public function __construct()
     {
@@ -21,7 +23,8 @@ class EngineBlock_Application_DiContainer extends Pimple
         $this->registerApplicationCache();
         $this->registerServiceRegistryClient();
         $this->registerServiceRegistryAdapter();
-        $this->registerSerializer();
+        $this->registerAssetManager();
+        $this->registerSerializer();        
     }
 
     protected function registerXmlConverter()
@@ -66,7 +69,6 @@ class EngineBlock_Application_DiContainer extends Pimple
             return new EngineBlock_Database_ConnectionFactory();
         });
     }
-
     /**
      * @return Zend_Cache_Backend_Apc
      */
@@ -115,6 +117,23 @@ class EngineBlock_Application_DiContainer extends Pimple
         $this[self::SERVICE_REGISTRY_ADAPTER] = $this->share(function (EngineBlock_Application_DiContainer $container)
         {
             return new EngineBlock_Corto_ServiceRegistry_Adapter($container->getServiceRegistryClient());
+        });
+    }
+    
+
+    /**
+     * @return EngineBlock_AssetManager
+     */
+    public function getAssetManager()
+    {
+        return $this[self::ASSET_MANAGER];
+    }
+
+    protected function registerAssetManager()
+    {
+        $this[self::ASSET_MANAGER] = $this->share(function (EngineBlock_Application_DiContainer $container)
+        {
+            return new EngineBlock_AssetManager();
         });
     }
 

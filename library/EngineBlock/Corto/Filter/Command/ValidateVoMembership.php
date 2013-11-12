@@ -61,7 +61,10 @@ class EngineBlock_Corto_Filter_Command_ValidateVoMembership extends EngineBlock_
         $this->_adapter->setVirtualOrganisationContext($vo);
 
         // If in VO context, validate the user's membership
-        $validator = new EngineBlock_VirtualOrganization_Validator();
+
+        EngineBlock_ApplicationSingleton::getLog()->debug("VO $vo membership required");
+
+        $validator = $this->_getValidator();
         $isMember = $validator->isMember(
             $vo,
             $this->_collabPersonId,
@@ -72,5 +75,15 @@ class EngineBlock_Corto_Filter_Command_ValidateVoMembership extends EngineBlock_
         }
 
         $this->_responseAttributes[self::VO_NAME_ATTRIBUTE] = $vo;
+
     }
+
+    /**
+     * @return EngineBlock_VirtualOrganization_Validator
+     */
+    protected function _getValidator()
+    {
+        return new EngineBlock_VirtualOrganization_Validator();
+    }
+
 }

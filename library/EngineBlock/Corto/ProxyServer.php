@@ -14,6 +14,7 @@ class EngineBlock_Corto_ProxyServer
     const MESSAGE_TYPE_RESPONSE = 'SAMLResponse';
 
     const VO_CONTEXT_PFX          = 'voContext';
+    const VO_CONTEXT_IMPLICIT     = 'VoContextImplicit';
 
     protected $_serviceToControllerMapping = array(
         'singleSignOnService'               => '/authentication/idp/single-sign-on',
@@ -210,6 +211,19 @@ class EngineBlock_Corto_ProxyServer
         return $this;
     }
 
+    public function getDisplayName($attributeId, $ietfLanguageTag = 'en')
+    {
+        $metadata = new EngineBlock_Attributes_Metadata();
+        return $metadata->getDisplayName($attributeId, $ietfLanguageTag);
+
+    }
+
+    public function sortConsentDisplayOrder(&$attributes)
+    {
+        $metadata = new EngineBlock_Attributes_Metadata();
+        return $metadata->sortConsentDisplayOrder($attributes);
+    }
+
     public function getAttributeName($attributeId, $ietfLanguageTag = 'en', $fallbackToId = true)
     {
         $metadata = new EngineBlock_Attributes_Metadata();
@@ -220,20 +234,6 @@ class EngineBlock_Corto_ProxyServer
     {
         $metadata = new EngineBlock_Attributes_Metadata();
         return $metadata->getDescription($attributeId, $ietfLanguageTag);
-    }
-
-    /**
-     * Return the url of the Static vhost containing media, script and css files
-     *
-     * @example <?php echo $this->staticUrl(); ?>
-     *
-     * @return string
-     */
-    public static function staticUrl($path = "")
-    {
-        $application = EngineBlock_ApplicationSingleton::getInstance();
-        $settings = $application->getConfiguration();
-        return $settings->static->protocol . '://'. $settings->static->host . $path;
     }
 
     public function getUrl($serviceName = "", $remoteEntityId = "", $request = "")
@@ -742,13 +742,7 @@ class EngineBlock_Corto_ProxyServer
             '_Version'      => '2.0',
             '_IssueInstant' => $now,
             '_InResponseTo' => $request['_ID'],
-
-            'saml:Issuer' => array('__v' => $this->getUrl('idpMetadataService', $destinationID, $request)),
-            'samlp:Status' => array(
-                'samlp:StatusCode' => array(
-                    '_Value' => 'urn:oasis:names:tc:SAML:2.0:status:Success',
-                ),
-            ),
+            '_Consent'      => null,
         );
 
         // the original request was unsolicited, remove InResponseTo attribute
@@ -765,6 +759,15 @@ class EngineBlock_Corto_ProxyServer
                 "No Destination in request or metadata for: $destinationID"
             );
         }
+
+        $response['saml:Issuer'] = array(
+            '__v' => $this->getUrl('idpMetadataService', $destinationID, $request)
+        );
+        $response['samlp:Status'] = array(
+            'samlp:StatusCode' => array(
+                '_Value' => 'urn:oasis:names:tc:SAML:2.0:status:Success',
+            )
+        );
 
         return $response;
     }
@@ -933,7 +936,7 @@ class EngineBlock_Corto_ProxyServer
         // Check the session for a AuthnRequest with the given ID
         // Expect to get back an AuthnRequest issued by EngineBlock and destined for the IdP
         if (!$id || !isset($_SESSION[$id])) {
-            throw new EngineBlock_Corto_ProxyServer_Exception(
+            throw new EngineBlock_Corto_Module_Services_SessionLostException(
                 "Trying to find a AuthnRequest (we made and sent) with id '$id' but it is not known in this session? ".
                 "This could be an unsolicited Response (which we do not support) but more likely the user lost their session",
                 EngineBlock_Corto_ProxyServer_Exception::CODE_NOTICE
@@ -1004,7 +1007,11 @@ class EngineBlock_Corto_ProxyServer
             );
         }
 
-        $responseAssertionAttributes = &$response['saml:Assertion']['saml:AttributeStatement'][0]['saml:Attribute'];
+        if (isset($response['saml:Assertion']['saml:AttributeStatement'][0]['saml:Attribute'])) {
+            $responseAssertionAttributes = &$response['saml:Assertion']['saml:AttributeStatement'][0]['saml:Attribute'];
+        } else {
+            $responseAssertionAttributes = array();
+        }
 
         // Take the attributes out
         $responseAttributes = EngineBlock_Corto_XmlToArray::attributes2array($responseAssertionAttributes);
@@ -1291,11 +1298,16 @@ class EngineBlock_Corto_ProxyServer
      * Delta 0 gives current date and time, delta 3600 is +1 hour, delta -3600 is -1 hour.
      *
      * @param int $deltaSeconds
+     * @param int|null $time Current time to add delta to.
      * @return string
      */
-    public function timeStamp($deltaSeconds = 0)
+    public function timeStamp($deltaSeconds = 0, $time = null)
     {
-        return gmdate('Y-m-d\TH:i:s\Z', time() + $deltaSeconds);
+        $time = (int) $time;
+        if ($time === 0) {
+            $time = time();
+        }
+        return gmdate('Y-m-d\TH:i:s\Z', $time + $deltaSeconds);
     }
 
     public function getNewId()
