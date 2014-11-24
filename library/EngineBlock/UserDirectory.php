@@ -19,9 +19,11 @@
  *
  * @category  SURFconext EngineBlock
  * @package
- * @copyright Copyright Â¬Â© 2010-2011 SURFnet SURFnet bv, The Netherlands (http://www.surfnet.nl)
+ * @copyright Copyright ¬© 2010-2011 SURFnet SURFnet bv, The Netherlands (http://www.surfnet.nl)
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
+
+use OpenConext\Component\EngineBlockMetadata\Entity\IdentityProviderEntity;
 
 /**
  * Access to the LDAP directory where all users are provisioned
@@ -155,15 +157,15 @@ class EngineBlock_UserDirectory
         try {
             switch (count($users)) {
                 case 1:
-                    $user = $this->_updateUser($users[0], $ldapAttributes, $saml2attributes, $idpEntityMetadata);
+                    $user = $this->_updateUser($users[0], $ldapAttributes);
                     break;
                 case 0:
-                    $user = $this->_addUser($ldapAttributes, $saml2attributes, $idpEntityMetadata);
+                    $user = $this->_addUser($ldapAttributes);
                     break;
                 default:
-                    $message = 'Whoa, multiple users for the same UID: "' . $uid . '"?!?!?';
+                    $message = 'Whoa, multiple users for the same UID: "' . $collabPersonId . '"?!?!?';
                     $e = new EngineBlock_Exception($message);
-                    $e->userId = $uid;
+                    $e->userId = $collabPersonId;
                     throw $e;
             }
         } catch (Zend_Ldap_Exception $e) {
@@ -172,7 +174,7 @@ class EngineBlock_UserDirectory
             // add the user because it was already added...
             // So if a user has already been added we simply try again
             if ($e->getCode() === Zend_Ldap_Exception::LDAP_ALREADY_EXISTS) {
-                return $this->registerUser($saml2attributes, $idpEntityMetadata);
+                return $this->registerUser($saml2attributes);
             }
             else {
                 throw new EngineBlock_Exception("LDAP failure", EngineBlock_Exception::CODE_ALERT, $e);
@@ -211,17 +213,17 @@ class EngineBlock_UserDirectory
      *
      *
      * @throws EngineBlock_Exception
-     * @param string $uid
-     * @return string
+     * @param string $collabPersonId
+     * @return string collabPersonId
      */
-    public function setUserSecondWarningSent($uid)
+    public function setUserSecondWarningSent($collabPersonId)
     {
         $users = $this->findUsersByIdentifier($uid,$this->_openConextIdentifierType);
 
         // Only update a user
         if (count($users) > 1) {
-            $e = new EngineBlock_Exception("Multiple users found for UID: $uid?!");
-            $e->userId = $uid;
+            $e = new EngineBlock_Exception("Multiple users found for UID: $collabPersonId?!");
+            $e->userId = $collabPersonId;
             throw $e;
         }
 
@@ -236,27 +238,27 @@ class EngineBlock_UserDirectory
     /**
      * Delete a user from the LDAP if he/she wants to be removed from the SURFconext platform
      *
-     * @param  $uid
+     * @param string $collabPersonId
      * @return void
      */
-    public function deleteUser($uid)
+    public function deleteUser($collabPersonId)
     {
-        $dn = $this->_buildUserDn($uid);
+        $dn = $this->_buildUserDn($collabPersonId);
         $this->_getLdapClient()->delete($dn, false);
     }
 
     /**
      * Build the user dn based on the UID
      *
-     * @param  $uid
+     * @param string $collabPersonId
      * @return null|string
      */
-    protected function _buildUserDn($uid)
+    protected function _buildUserDn($collabPersonId)
     {
         $users = $this->findUserByCollabPersonId($uid);
         if (count($users) !== 1) {
-            $e = new EngineBlock_Exception("Multiple or no users found for uid $uid?");
-            $e->userId = $uid;
+            $e = new EngineBlock_Exception("Multiple or no users found for uid $collabPersonId?");
+            $e->userId = $collabPersonId;
             throw $e;
         }
         $user = $users[0];
