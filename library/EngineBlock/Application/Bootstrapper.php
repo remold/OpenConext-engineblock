@@ -201,10 +201,16 @@ class EngineBlock_Application_Bootstrapper
 
     protected function _bootstrapTranslations()
     {
-        $translationFiles = array(
-            'en' => ENGINEBLOCK_FOLDER_ROOT . 'languages/en.php',
-            'nl' => ENGINEBLOCK_FOLDER_ROOT . 'languages/nl.php'
-        );
+        $translationFiles = array();
+        foreach ($this->_application->getConfigurationValue('languageFiles') as $configLang => $configLangFile) {
+            $translationFiles[$configLang] = $configLangFile;
+        }
+        if (empty($translationFiles)) {
+            $translationFiles = array(
+                'en' => ENGINEBLOCK_FOLDER_ROOT . 'languages/en.php',
+                'nl' => ENGINEBLOCK_FOLDER_ROOT . 'languages/nl.php'
+            );
+        }
         $translationCacheProxy = new EngineBlock_Translate_CacheProxy(
             $translationFiles,
             $this->_application->getDiContainer()->getApplicationCache()
