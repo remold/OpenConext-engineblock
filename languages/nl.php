@@ -26,49 +26,49 @@ return array(
 
     //WAYF
     'idp_selection_title'       => 'Identity Provider Selectie - %s',
-    'idp_selection_subheader'   => 'Login via je eigen instelling',
-    'search'                    => 'of zoek een instelling',
-    'idp_selection_desc'        => 'Selecteer jouw instelling en log in voor <i>%s</i>',
+    'idp_selection_subheader'   => 'Login via je eigen organisatie',
+    'search'                    => 'of zoek een organisatie',
+    'idp_selection_desc'        => 'Selecteer jouw organisatie en log in voor <i>%s</i>',
     'our_suggestion'            => 'Onze suggestie:',
     'no_access'                 => 'Geen toegang.',
     'no_access_more_info'       => 'Geen toegang. &raquo;',
     'no_results'                => 'Geen resultaten gevonden',
 
     //Footer
-    'footer'                => '<a href="http://www.surfconext.nl/">SURFconext</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="https://wiki.surfnet.nl/display/conextsupport/Terms+of+Service+%28NL%29">Gebruiksvoorwaarden</a>',
+    'footer'                => '<a href="http://www.openconext.org/">OpenConext</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="https://github.com/OpenConext/OpenConext/blob/master/NOTICE.txt">Gebruiksvoorwaarden</a>',
 
     //Help
     'help_header'           => 'Help',
-    'help_description'      => '<p>Heb je vragen over dit scherm of de SURFconext dienstverlening, bekijk dan de antwoorden bij de FAQ hieronder.</p>
+    'help_description'      => '<p>Heb je vragen over dit scherm of de OpenConext dienstverlening, bekijk dan de antwoorden bij de FAQ hieronder.</p>
 
-    <p>Staat je vraag er niet bij, of ben je niet tevreden met een antwoord? Bezoek dan <a href="https://wiki.surfnet.nl/display/conextsupport/">de SURFconext support pagina</a> of stuur een mail naar <a href="mailto:help@surfconext.nl">help@surfconext.nl</a></p>',
+    <p>Staat je vraag er niet bij, of ben je niet tevreden met een antwoord? Bezoek dan <a href="https://www.openconext.org/documentation">de OpenConext website </a> of stuur een mail naar <a href="mailto:help@demo.openconext.org">help@demo.openconext.org</a></p>',
 
     'close_question'        =>      'Sluit',
 
     //Help questions
 		// general help questions
-    'question_surfconext'               =>      'Wat is SURFconext?',
-    'answer_surfconext'                 =>      '<p>SURFconext is een verbindingsinfrastructuur die een aantal bouwstenen voor online samenwerking met elkaar verbindt. Die bouwstenen zijn services voor federatieve authenticatie, groepsbeheer, sociale netwerken en cloud applicaties van verschillende aanbieders. Met SURFconext is het mogelijk om met je eigen instellingsaccount toegang te krijgen tot diensten van verschillende aanbieders.</p>',
-    'question_log_in'                   =>      'Hoe werkt inloggen via SURFconext?',
+    'question_surfconext'               =>      'Wat is OpenConext?',
+    'answer_surfconext'                 =>      '<p>OpenConext is een verbindingsinfrastructuur die een aantal bouwstenen voor online samenwerking met elkaar verbindt. Die bouwstenen zijn services voor federatieve authenticatie, groepsbeheer, sociale netwerken en cloud applicaties van verschillende aanbieders. Met OpenConext is het mogelijk om met je eigen organisatieaccount toegang te krijgen tot diensten van verschillende aanbieders.</p>',
+    'question_log_in'                   =>      'Hoe werkt inloggen via OpenConext?',
     'answer_log_in'                     =>      '<ul>
-                            <li>Je selecteert in dit scherm je eigen instelling.</li>
-                            <li>Je wordt doorgestuurd naar een inlogpagina van je eigen instelling.Daar log je in.</li>
-                            <li>Je instelling geeft door aan SURFconext dat je succesvol bent ingelogd.</li>
+                            <li>Je selecteert in dit scherm je eigen organisatie.</li>
+                            <li>Je wordt doorgestuurd naar een inlogpagina van je eigen organisatie.Daar log je in.</li>
+                            <li>Je organisatie geeft door aan OpenConext dat je succesvol bent ingelogd.</li>
                             <li>Je wordt doorgestuurd naar de dienst waarop je hebt ingelogd om deze te gaan gebruiken.</li>
                         </ul>',
-    'question_security'                 =>      'Is de SURFconext infrastructuur veilig?',
-    'answer_security'                   =>      '<p>Jouw instelling en SURFnet hechten veel belang aan de privacy van gebruikers.<br />
+    'question_security'                 =>      'Is de OpenConext infrastructuur veilig?',
+    'answer_security'                   =>      '<p>Jouw organisatie en OpenConext hechten veel belang aan de privacy van gebruikers.<br />
 <br />
-Persoonsgegevens worden alleen verstrekt aan een dienstaanbieder wanneer dat noodzakelijk is voor het gebruik van de dienst. Contractuele afspraken tussen jouw instelling, SURFnet en de dienstaanbieder waarborgen dat er zorgvuldig wordt omgegaan met jouw persoonsgegevens.<br />
+Persoonsgegevens worden alleen verstrekt aan een dienstaanbieder wanneer dat noodzakelijk is voor het gebruik van de dienst. Contractuele afspraken tussen jouw organisatie en de dienstaanbieder waarborgen dat er zorgvuldig wordt omgegaan met jouw persoonsgegevens.<br />
 <br />
-Het privacybeleid voor deze dienstverlening is in detail beschreven en na te lezen op <a href="https://wiki.surfnet.nl/display/conextsupport/">de SURFconext support pagina</a>. Heb je vragen ten aanzien van het privacybeleid van SURFconext, mail deze dan naar de SURFconext helpdesk via <a href="mailto:help@surfconext.nl">help@surfconext.nl</a>.
+Het privacybeleid voor deze dienstverlening is in detail beschreven en na te lezen op <a href="https://www.openconext.org/documentation">de OpenConext website </a>. Heb je vragen ten aanzien van het privacybeleid van SURFconext, mail deze dan naar de OpenConext helpdesk via <a href="mailto:help@demo.openconext.org">help@demo.openconext.org</a>.
 </p>',
 
     	// consent help questions
     'question_consentscreen'           	=>      'Waarom dit scherm?',
     'answer_consentscreen'             	=>      '<p>Om toegang te krijgen tot deze dienst is het noodzakelijk dat een aantal persoonlijke gegevens wordt gedeeld met deze dienst.</p>',
     'question_consentinfo'           	=>      'Wat gebeurt er met mijn gegevens?',
-    'answer_consentinfo'             	=>      '<p>Indien je akkoord gaat met het verstrekken van je gegevens aan de dienst dan zullen de getoonde gegevens met deze dienst gedeeld worden. De dienstverlener zal de gegevens gebruiken en mogelijk opslaan voor een goede werking van de dienst. Op dit scherm vind je tevens een link naar de gebruiksvoorwaarden van de dienst en SURFconext welke meer informatie geven over de omgang met persoonlijke gegevens.</p>',
+    'answer_consentinfo'             	=>      '<p>Indien je akkoord gaat met het verstrekken van je gegevens aan de dienst dan zullen de getoonde gegevens met deze dienst gedeeld worden. De dienstverlener zal de gegevens gebruiken en mogelijk opslaan voor een goede werking van de dienst. Op dit scherm vind je tevens een link naar de gebruiksvoorwaarden van de dienst en OpenConext welke meer informatie geven over de omgang met persoonlijke gegevens.</p>',
     'question_consentno'           		=>      'Wat gebeurt er als ik mijn gegevens niet wil delen?',
     'answer_consentno'             		=>      '<p>Als je niet akkoord gaat met het delen van je gegevens kun je geen gebruik maken van de dienst. De getoonde gegevens zullen in dit geval niet met de dienst worden gedeeld.</p>',
     'question_consentagain'           	=>      'Ik heb eerder al toestemming gegeven voor het delen van mijn gegevens, waarom krijg ik deze vraag opnieuw?',
@@ -76,21 +76,21 @@ Het privacybeleid voor deze dienstverlening is in detail beschreven en na te lez
 
 		// WAYF help questions
     'question_screen'                   =>      'Waarom dit scherm?',
-    'answer_screen'                     =>      '<p>Je kunt met je instellingsaccount inloggen bij deze dienst. In dit scherm geef je aan via welke instelling je wilt inloggen.</p>',
-    'question_institution_not_listed'   =>      'Ik zie mijn instelling er niet tussen staan, wat nu?',
-    'answer_institution_not_listed'     =>      '<p>Staat jouw instelling niet in de lijst? Dan is jouw instelling waarschijnlijk nog niet aangesloten op SURFconext. Ga terug naar de pagina van de dienst; soms biedt een dienst ook alternatieve manieren om in te loggen.</p>',
-    'question_institution_no_access'    =>      'Mijn instelling geeft geen toegang tot deze dienst, wat nu?',
-    'answer_institution_no_access'      =>      '<p>Het kan zijn dat je instelling wel is aangesloten op SURFconext maar (nog) geen afspraken heeft gemaakt met de dienstaanbieder over het gebruik van deze dienst. Wij zullen je verzoek doorsturen naar de verantwoordelijke binnen jouw instelling die de toegang tot diensten organiseert. Wellicht is jouw verzoek voor je instelling aanleiding om alsnog afspraken met deze dienstaanbieder te maken.</p>',
-    'question_asked_institution_access'  =>      'Ik heb toegang aangevraagd voor mijn instelling, maar mijn instelling geeft nog steeds geen toegang. Waarom niet?',
-    'answer_asked_institution_access'    =>      '<p>Blijkbaar is jouw instelling nog niet tot een overeenkomst met de dienstaanbieder gekomen of, het gebruik van deze dienst is niet wenselijk binnen jouw instelling. SURFnet heeft geen controle over de snelheid waarmee je antwoord of toegang krijgt. Die verantwoordelijkheid en zeggenschap ligt bij de instelling.</p>',
-    'question_cannot_select'            =>      'Ik kan in mijn browser mijn instelling niet selecteren, wat nu?',
-    'answer_cannot_select'              =>      '<p>Het keuzescherm van SURFconext is te gebruiken in de meest gangbare browsers waaronder, Internet Explorer, Firefox, Chrome en Safari. Andere browsers worden mogelijk niet ondersteund. Verder moet je browser het gebruik van cookies en javascript toestaan.</p>',
+    'answer_screen'                     =>      '<p>Je kunt met je organisatieaccount inloggen bij deze dienst. In dit scherm geef je aan via welke organisatie je wilt inloggen.</p>',
+    'question_institution_not_listed'   =>      'Ik zie mijn organisatie er niet tussen staan, wat nu?',
+    'answer_institution_not_listed'     =>      '<p>Staat jouw organisatie niet in de lijst? Dan is jouw organisatie waarschijnlijk nog niet aangesloten op OpenConext. Ga terug naar de pagina van de dienst; soms biedt een dienst ook alternatieve manieren om in te loggen.</p>',
+    'question_institution_no_access'    =>      'Mijn organisatie geeft geen toegang tot deze dienst, wat nu?',
+    'answer_institution_no_access'      =>      '<p>Het kan zijn dat je organisatie wel is aangesloten op OpenConext maar (nog) geen afspraken heeft gemaakt met de dienstaanbieder over het gebruik van deze dienst. Wij zullen je verzoek doorsturen naar de verantwoordelijke binnen jouw organisatie die de toegang tot diensten organiseert. Wellicht is jouw verzoek voor je organisatie aanleiding om alsnog afspraken met deze dienstaanbieder te maken.</p>',
+    'question_asked_institution_access'  =>      'Ik heb toegang aangevraagd voor mijn organisatie, maar mijn organisatie geeft nog steeds geen toegang. Waarom niet?',
+    'answer_asked_institution_access'    =>      '<p>Blijkbaar is jouw organisatie nog niet tot een overeenkomst met de dienstaanbieder gekomen of, het gebruik van deze dienst is niet wenselijk binnen jouw organisatie. OpenConext heeft geen controle over de snelheid waarmee je antwoord of toegang krijgt. Die verantwoordelijkheid en zeggenschap ligt bij de organisatie.</p>',
+    'question_cannot_select'            =>      'Ik kan in mijn browser mijn organisatie niet selecteren, wat nu?',
+    'answer_cannot_select'              =>      '<p>Het keuzescherm van OpenConext is te gebruiken in de meest gangbare browsers waaronder, Internet Explorer, Firefox, Chrome en Safari. Andere browsers worden mogelijk niet ondersteund. Verder moet je browser het gebruik van cookies en javascript toestaan.</p>',
 
     //Form
     'sorry'                 => 'Helaas,',
     'form_description'      => 'heeft nog geen toegang tot deze dienst. Wat nu?</h2>
             <p>Wil je toch graag toegang tot deze dienst, vul dan
-      onderstaand formulier in. Wij sturen je verzoek door naar de juiste persoon binnen jouw instelling.</p>',
+      onderstaand formulier in. Wij sturen je verzoek door naar de juiste persoon binnen jouw organisatie.</p>',
     'name'                  => 'Naam',
     'name_error'            => 'Vul je naam in',
     'email'                 => 'Email',
@@ -101,47 +101,46 @@ Het privacybeleid voor deze dienstverlening is in detail beschreven en na te lez
     'send'                  => 'Verstuur',
 
     'send_confirm'          => 'Je verzoek is verzonden',
-    'send_confirm_desc'     => '<p>SURFnet stuurt je verzoek door aan de juiste persoon binnen jouw instelling. Het is aan deze persoon om actie te ondernemen op basis van jouw verzoek. Het kan zijn dat er nog afspraken gemaakt moeten worden tussen jouw instelling en de dienstaanbieder.</p>
+    'send_confirm_desc'     => '<p>OpenConext stuurt je verzoek door aan de juiste persoon binnen jouw organisatie. Het is aan deze persoon om actie te ondernemen op basis van jouw verzoek. Het kan zijn dat er nog afspraken gemaakt moeten worden tussen jouw organisatie en de dienstaanbieder.</p>
 
-    <p>SURFnet faciliteert het doorsturen van je verzoek maar heeft geen controle over de snelheid waarmee je antwoord of toegang krijgt.</p>
+    <p>OpenConext faciliteert het doorsturen van je verzoek maar heeft geen controle over de snelheid waarmee je antwoord of toegang krijgt.</p>
 
-    <p>Heb je vragen over je verzoek, neem dan contact op met <a href="mailto:help@surfconext.nl">help@surfconext.nl</a></p>',
+    <p>Heb je vragen over je verzoek, neem dan contact op met uw organisatie</p>',
 
     //Profile
-    'profile_header'                    => 'SURFconext',
+    'profile_header'                    => 'OpenConext',
     'profile_subheader'                 => 'Profiel Overzicht',
     'profile_header_my_profile'         => 'Mijn Profiel',
     'profile_header_my_groups'          => 'Mijn Groepen',
     'profile_header_my_apps'            => 'Mijn Applicaties',
     'profile_header_exit'               => 'Uitgang',
-    'profile_header_surfteams'          => 'SURFteams',
+    'profile_header_surfteams'          => 'OpenConext Teams',
     'profile_header_auth_needed'        => 'Authenticatie vereist',
-    'profile_header_leave_surfconext'   => 'Verlaat SURFconext',
-    'profile_store_info'                => 'Van jouw instelling hebben wij de volgende gegevens ontvangen. Deze gegevens worden opgeslagen in (en gebruikt door) SURFconext. Tevens is het mogelijk dat een subset van deze gegevens worden verstrekt aan diensten die je via SURFconext benadert.',
+    'profile_header_leave_surfconext'   => 'Verlaat OpenConext',
+    'profile_store_info'                => 'Van jouw organisatie hebben wij de volgende gegevens ontvangen. Deze gegevens worden opgeslagen in (en gebruikt door) OpenConext. Tevens is het mogelijk dat een subset van deze gegevens worden verstrekt aan diensten die je via OpenConext benadert.',
 
     'profile_group_membership_desc'     => 'U bent lid van de volgende groepen.',
     'profile_no_groups'                 => 'Geen Groepen',
-    'profile_extra_groups_desc'         => 'Om uw instellingsgroepen te zien moet u het gebruik hiervoor binnen SURFconext autoriseren.',
-    'profile_leave_surfconext_desc'     => 'Je gebruikt SURFconext om met je instellingsaccount in te loggen op een of meerdere applicaties. Je kan je SURFconext profiel verwijderen door op onderstaande knop te drukken.',
+    'profile_extra_groups_desc'         => 'Om uw organisatiegroepen te zien moet u het gebruik hiervoor binnen OpenConext autoriseren.',
+    'profile_leave_surfconext_desc'     => 'Je gebruikt OpenConext om met je organisatieaccount in te loggen op een of meerdere applicaties. Je kan je OpenConext profiel verwijderen door op onderstaande knop te drukken.',
     'profile_leave_surfconext_link'     => 'Verwijder mijn profiel!',
     'profile_leave_surfconext_disclaim' => 'Let op:
                                             <ul>
-                                                <li>Alleen de informatie welke in SURFconext wordt opgeslagen zal verwijderd worden.</li>
-                                                <li>Diensten waar je met SURFconext op bent ingelogd zullen niet worden ingelicht. Het is dus mogelijk dat jouw persoonlijke gegevens hier nog opgeslagen zijn.</li>
-                                                <li>Na een nieuwe login via SURFconext zal er automatisch weer een profiel worden aangemaakt.</li>
-                                             </ul>
-                                             <br>Meer informatie over welke informatie er wordt opgeslagen door SURFconext kan je vinden op de <a href="https://wiki.surfnet.nl/display/conextsupport/Profile+page" target="_blank">SURFconext supportpagina\'s</a>.',
+                                                <li>Alleen de informatie welke in OpenConext wordt opgeslagen zal verwijderd worden.</li>
+                                                <li>Diensten waar je met OpenConext op bent ingelogd zullen niet worden ingelicht. Het is dus mogelijk dat jouw persoonlijke gegevens hier nog opgeslagen zijn.</li>
+                                                <li>Na een nieuwe login via OpenConext zal er automatisch weer een profiel worden aangemaakt.</li>
+                                             </ul>',
     'profile_leave_surfconext_link_add' => '(sluit je browser na deze actie om de deprovisioning procedure te voltooien)',
     'profile_revoke_access'             => 'Trek toegang in',
     'profile_leave_surfconext_conf'     => 'Weet je zeker dat je je profiel wilt verwijderen? Je zult je browser moeten afsluiten om deze actie te voltooien',
     'profile_eula_link'                 => 'Gebruikersvoorwaarden',
     'profile_support_link'              => 'Ondersteunings pagina\'s',
-    'profile_mail_text'                 => 'SURFconext support kan je vragen om bovenstaande informatie te delen. Deze informatie kan hen helpen om jouw supportvraag te beantwoorden.',
-    'profile_mail_attributes'           => 'Mail data naar help@surfconext.nl',
+    'profile_mail_text'                 => 'OpenConext support kan je vragen om bovenstaande informatie te delen. Deze informatie kan hen helpen om jouw supportvraag te beantwoorden.',
+    'profile_mail_attributes'           => 'Mail data naar help@demo.openconext.org',
     'profile_mail_send_success'         => 'De mail met bovenstaande informatie is succesvol verstuurd.',
 
     //Profile MyApps
-    'profile_apps_connected_aps'        => 'SURFconext Apps',
+    'profile_apps_connected_aps'        => 'OpenConext Apps',
     'profile_apps_share'                => 'Je hebt toestemming gegeven om profielinformatie te delen met de volgende diensten:',
     'profile_apps_service_th'           => 'Service/Applicatie',
     'profile_apps_eula_th'              => 'EULA',
@@ -156,7 +155,7 @@ Het privacybeleid voor deze dienstverlening is in detail beschreven en na te lez
     'profile_attribute_release'         => 'Aan deze Service Provider worden de volgende attributen vrijgegeven:',
 
     //Delete User
-    'deleteuser_success_header'         => 'SURFconext exit procedure',
+    'deleteuser_success_header'         => 'OpenConext exit procedure',
     'deleteuser_success_subheader'      => 'U bent bijna klaar..',
     'deleteuser_success_desc'           => '<strong>Belangrijk!</strong> Om de exit procedure succesvol af te ronden, moet u nu uw browser afsluiten.',
 
@@ -168,7 +167,7 @@ Het privacybeleid voor deze dienstverlening is in detail beschreven en na te lez
     'consent_intro'                     => '%s verzoekt deze informatie die %s opgeslagen heeft voor u:',
     'consent_idp_provides'              => 'wilt de volgende informatie vrijgeven:',
     'consent_sp_is_provided'            => 'aan',
-    'consent_terms_of_service'          => 'Deze informatie zal worden opgeslagen in SURFconext en doorgegeven aan %s. Gebruiksvoorwaarden van %s en %s zijn van toepassing.',
+    'consent_terms_of_service'          => 'Deze informatie zal worden opgeslagen in OpenConext en doorgegeven aan %s. Gebruiksvoorwaarden van %s en %s zijn van toepassing.',
 
     'consent_accept'                    => 'Ja, deel deze gegevens',
     'consent_decline'                   => 'Nee, ik wil geen gebruik maken van deze dienst',
@@ -178,15 +177,13 @@ Het privacybeleid voor deze dienstverlening is in detail beschreven en na te lez
     'consent_header_info'               => 'Verzoek voor informatie uitwisseling',
     'consent_sp_idp_info'               => 'Om gebruik te kunnen maken van %s is het nodig om de volgende informatie, verkregen van de %s, te delen:',
     'sp_terms_of_service'               => 'Bekijk de %s\'s <a href="%s" target="_blank">gebruiksvoorwaarden</a>',
-    'name_id'                           => 'SURFconext gebruikers ID',
+    'name_id'                           => 'OpenConext gebruikers ID',
 
     //Error screens
     'error_404'                         => '404 Pagina niet gevonden',
     'error_404_desc'                    => 'De pagina is niet gevonden.',
     'error_help_desc'                   => '<p>
-        Bezoek <a href="https://wiki.surfnet.nl/display/conextsupport/">de support pagina</a> als dit uw probleem niet oplost.
-        Op deze pagina vindt u meer informatie over de mogelijke oorzaken en hoe u contact kan opnemen met het support team.
-    </p>',
+        Bezoek <a href="https://www.openconext.org/documentation">de OpenConext website </a> als dit uw probleem niet oplost.</p>',
     'error_no_consent'                  => 'Niet mogelijk om verder te gaan naar dienst',
     'error_no_consent_desc'             => 'Deze applicatie kan enkel worden gebruikt wanneer de vermelde informatie wordt gedeeld.<br /><br />
 
@@ -196,8 +193,8 @@ Als u deze applicatie wilt gebruiken moet u:<br />
 <li>uw informatie delen</li></ul>',
     'error_no_idps'                     => 'Error - Geen Identity Providers gevonden',
     'error_no_idps_desc'                => '<p>
-        De application die u probeert te benaderen (uw &lsquo;Service Provider&rsquo;) is niet toegankelijk via de SURFconext infrastructuur.
-        Ga alstublieft <a href="javascript:history.back();">terug</a> en neem contact op met de helpdesk van SURFconext via <a href="mailto:help@surfconext.nl">help@surfconext.nl</a>.
+        De application die u probeert te benaderen (uw &lsquo;Service Provider&rsquo;) is niet toegankelijk via de OpenConext infrastructuur.
+        Ga alstublieft <a href="javascript:history.back();">terug</a> en neem contact op met de beheerders van de dienst.
         <br /><br />
     </p>',
     'error_session_lost'                => 'Error - Uw sessie is verloren gegaan..',
@@ -214,12 +211,12 @@ Als u deze applicatie wilt gebruiken moet u:<br />
     'error_invalid_acs_binding_desc'        => 'Het opgegeven of geconfigureerde "Assertion Consumer Service" Binding Type is onjuist of bestaat niet.',
     'error_unknown_service_provider'              => 'Error - Kan geen metadata ophalen voor EntityID \'%s\'',
     'error_unknown_service_provider_desc'     => '<p>
-        Er kon geen Service Provider worden gevonden met het opgegeven EntityID. Neem contact op met de SURFconext helpdesk op <a href="mailto:help@surfconext.nl">help@surfconext.nl</a>.
+        Er kon geen Service Provider worden gevonden met het opgegeven EntityID. Neem contact op met de OpenConext helpdesk op <a href="mailto:help@demo.openconext.org">help@demo.openconext.org</a>.
     </p>',
 
     'error_unknown_issuer'              => 'Error - Onbekende applicatie..',
     'error_unknown_issuer_desc'     => '<p>
-        Deze applicatie is niet beschikbaar voor SURFconext. Breng alstublieft de aanbieder van deze dienst op de hoogte. Geef hierbij de volgende informatie door:
+        Deze applicatie is niet beschikbaar voor OpenConext. Breng alstublieft de aanbieder van deze dienst op de hoogte. Geef hierbij de volgende informatie door:
     </p>',
     'error_vo_membership_required'      => 'Lidmaatschap van een Virtuele Organisatie vereist',
     'error_vo_membership_required_desc' => 'U bent succesvol ingelogd bij uw Identity Provider, maar om gebruik te kunnen maken van deze dienst moet u ook lid zijn van een Virtuele Organisatie.',
@@ -229,13 +226,13 @@ Als u deze applicatie wilt gebruiken moet u:<br />
     </p>',
     'error_missing_required_fields'     => 'Error - Verplichte velden ontbreken..',
     'error_missing_required_fields_desc'=> '<p>
-        Uw instelling geeft niet de benodigde informatie vrij, daarom kunt u deze applicatie niet gebruiken.
+        Uw organisatie geeft niet de benodigde informatie vrij, daarom kunt u deze applicatie niet gebruiken.
     </p>
     <p>
-        Neem alstublieft contact op met uw instelling. Geef hierbij de onderstaande informatie door.
+        Neem alstublieft contact op met uw organisatie. Geef hierbij de onderstaande informatie door.
     </p>
     <p>
-        Omdat uw instelling niet de juiste attributen aan SURFconext doorgeeft is het inloggen mislukt. De volgende attributen zijn vereist om succesvol in te loggen op het SURFconext platform:
+        Omdat uw organisatie niet de juiste attributen aan OpenConext doorgeeft is het inloggen mislukt. De volgende attributen zijn vereist om succesvol in te loggen op het OpenConext platform:
         <ul>
             <li>UID</li>
             <li>schacHomeOrganization</li>
@@ -244,7 +241,7 @@ Als u deze applicatie wilt gebruiken moet u:<br />
     'error_group_oauth'            =>  'Error - Group autorisatie is mislukt..',
     'error_group_oauth_desc'       => '<p>
         De extere groep provider <b>%s</b> retourneerde een fout.<br />
-        Neem contact op met de SURFconext helpdesk via <a href="mailto:help@surfconext.nl">help@surfconext.nl</a>.
+        Neem contact op met de OpenConext helpdesk via <a href="mailto:help@demo.openconext.org">help@demo.openconext.org</a>.
         <br />
     </p>',
 
@@ -284,12 +281,12 @@ Als u deze applicatie wilt gebruiken moet u:<br />
 
     'attributes' => 'Attributen',
     'validation' => 'Validatie',
-    'idp_debugging_mail_explain' => 'Indien gevraagd door SURFconext beheer,
-                                        gebruik de "Mail naar surfconext-beheer" knop hieronder
+    'idp_debugging_mail_explain' => 'Indien gevraagd door OpenConext,
+                                        gebruik de "Mail naar OpenConext" knop hieronder
                                         om de informatie op dit scherm naar SURFconext beheer te e-mailen.',
-    'idp_debugging_mail_button' => 'Mail naar surfconext-beheer',
+    'idp_debugging_mail_button' => 'Mail naar sOpenConext',
 
     // Logout
     'logout_description' => 'Deze applicatie maakt gebruik van centrale login. Hiermee is het mogelijk om met single sign on bij verschillende applicaties in te loggen. Om er 100%% zeker van te zijn dat je uitgelogd bent, moet je de browser helemaal afsluiten.',
-    'logout_information_link' => '<a href="https://wiki.surfnet.nl/display/conextsupport/Uitloggen+SURFconext">Meer informatie over veilig uitloggen</a>',
+    'logout_information_link' => '<a href="http://docs.oasis-open.org/security/saml/Post2.0/sstc-saml-tech-overview-2.0-cd-02.html#5.3.Single Logout Profile|outline">Meer informatie over veilig uitloggen</a>',
 );
