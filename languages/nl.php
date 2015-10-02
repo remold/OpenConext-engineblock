@@ -271,7 +271,7 @@ Als u deze applicatie wilt gebruiken moet u:<br />
     'error_attribute_validator_min'                 => '%1$s heeft minimaal %2$d waardes nodig (%3$d gegeven)',
     'error_attribute_validator_max'                 => '%1$s heeft maximaal %2$d waardes (%3$d gegeven)',
     'error_attribute_validator_regex'               => '\'%3$s\' voldoet niet aan de voorwaarden voor waardes van dit attribuut (%2$s)',
-    'error_attribute_validator_not_in_definitions'  => '%1$s is niet bekend in het SURFconext schema',
+    'error_attribute_validator_not_in_definitions'  => '%1$s is niet bekend in het attribute schema',
     'error_attribute_validator_allowed'             => '\'%3$s\' is geen toegestane waarde voor dit attribuut',
     'error_attribute_validator_availability'        => '\'%3$s\' is a gereserveerde SchacHomeOrganization voor een andere Identity Provider',
 
@@ -283,7 +283,7 @@ Als u deze applicatie wilt gebruiken moet u:<br />
     'validation' => 'Validatie',
     'idp_debugging_mail_explain' => 'Indien gevraagd door OpenConext,
                                         gebruik de "Mail naar OpenConext" knop hieronder
-                                        om de informatie op dit scherm naar SURFconext beheer te e-mailen.',
+                                        om de informatie op dit scherm te e-mailen.',
     'idp_debugging_mail_button' => 'Mail naar sOpenConext',
 
     // Logout
