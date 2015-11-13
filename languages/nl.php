@@ -28,18 +28,11 @@ return array(
 
     //WAYF
     'idp_selection_title'       => 'Identity Provider Selectie - %s',
-<<<<<<< HEAD
     'idp_selection_subheader'   => 'Login via je eigen organisatie',
     'search'                    => 'of zoek een organisatie',
     'idp_selection_desc'        => 'Selecteer jouw organisatie en log in voor <i>%s</i>',
     'our_suggestion'            => 'Onze suggestie:',
-=======
-    'idp_selection_subheader'   => 'Login via je eigen instelling',
-    'search'                    => 'Zoek een instelling...',
-    'idp_selection_desc'        => 'Selecteer een instelling en login bij <i>%s</i>',
-    'our_suggestion'            => 'Eerder gekozen:',
     'idps_with_access'          => 'Instellingen met toegang',
->>>>>>> remotes/remote/develop
     'no_access'                 => 'Geen toegang.',
     'no_access_more_info'       => 'Geen toegang. &raquo;',
     'no_results'                => 'Geen resultaten gevonden.',
@@ -55,14 +48,10 @@ return array(
     'return_to_sp'              => 'Keer terug naar Service Provider',
 
     //Footer
-<<<<<<< HEAD
-    'footer'                => '<a href="http://www.openconext.org/">OpenConext</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="https://github.com/OpenConext/OpenConext/blob/master/NOTICE.txt">Gebruiksvoorwaarden</a>',
-=======
     'service_by'            => 'Deze dienst is verbonden via',
-    'serviceprovider_link'  => '<a href="https://www.surfconext.nl/" target="_blank">SURFconext</a>',
-    'terms_of_service_link' => '<a href="https://wiki.surfnet.nl/display/conextsupport/Terms+of+Service+%28NL%29" target="_blank">Gebruiksvoorwaarden</a>',
-    'footer'                => '<a href="https://www.surfconext.nl/" target="_blank">SURFconext</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="https://wiki.surfnet.nl/display/conextsupport/Terms+of+Service+%28NL%29">Gebruiksvoorwaarden</a>',
->>>>>>> remotes/remote/develop
+    'serviceprovider_link'  => '<a href="http://www.openconext.org" target="_blank">OpenConext</a>',
+    'terms_of_service_link' => '<a href="<a href="https://github.com/OpenConext/OpenConext/blob/master/NOTICE.txt">Terms of Service</a>',
+    'footer'                => '<a href="http://www.openconext.org/">OpenConext</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="https://github.com/OpenConext/OpenConext/blob/master/NOTICE.txt">Terms of Service</a>',
 
     //Help
     'help'                  => 'Help',
@@ -118,14 +107,7 @@ Het privacybeleid voor deze dienstverlening is in detail beschreven en na te lez
     'sorry'                 => 'Helaas,',
     'form_description'      => 'heeft geen toegang tot deze dienst. Wat nu?</h2>
             <p>Wil je toch graag toegang tot deze dienst, vul dan
-<<<<<<< HEAD
-      onderstaand formulier in. Wij sturen je verzoek door naar de juiste persoon binnen jouw organisatie.</p>',
-=======
-      het onderstaande formulier in. Wij sturen je verzoek door naar de juiste persoon binnen jouw instelling.</p>',
-    'request_access_instructions' => '<h2>Helaas, je hebt geen toegang tot de dienst die je zoekt. Wat nu?</h2>
-                                <p>Wil je toch graag toegang tot deze dienst, vul dan het onderstaande formulier in.
-                                   Wij sturen je verzoek door naar de juiste persoon binnen jouw instelling.</p>',
->>>>>>> remotes/remote/develop
+            onderstaand formulier in. Wij sturen je verzoek door naar de juiste persoon binnen jouw organisatie.</p>',
     'name'                  => 'Naam',
     'name_error'            => 'Vul je naam in',
     'email'                 => 'E-mail',
@@ -145,7 +127,6 @@ Het privacybeleid voor deze dienstverlening is in detail beschreven en na te lez
 
     <p>Heb je vragen over je verzoek, neem dan contact op met uw organisatie</p>',
 
-<<<<<<< HEAD
     //Profile
     'profile_header'                    => 'OpenConext',
     'profile_subheader'                 => 'Profiel Overzicht',
@@ -169,60 +150,20 @@ Het privacybeleid voor deze dienstverlening is in detail beschreven en na te lez
                                                 <li>Diensten waar je met OpenConext op bent ingelogd zullen niet worden ingelicht. Het is dus mogelijk dat jouw persoonlijke gegevens hier nog opgeslagen zijn.</li>
                                                 <li>Na een nieuwe login via OpenConext zal er automatisch weer een profiel worden aangemaakt.</li>
                                              </ul>',
-    'profile_leave_surfconext_link_add' => '(sluit je browser na deze actie om de deprovisioning procedure te voltooien)',
+    'profile_leave_surfconext_link_add' => '(Sluit je browser na deze actie om de verwijderprocedure te voltooien.)',
     'profile_revoke_access'             => 'Trek toegang in',
     'profile_leave_surfconext_conf'     => 'Weet je zeker dat je je profiel wilt verwijderen? Je zult je browser moeten afsluiten om deze actie te voltooien',
     'profile_eula_link'                 => 'Gebruikersvoorwaarden',
     'profile_support_link'              => 'Ondersteunings pagina\'s',
     'profile_mail_text'                 => 'OpenConext support kan je vragen om bovenstaande informatie te delen. Deze informatie kan hen helpen om jouw supportvraag te beantwoorden.',
     'profile_mail_attributes'           => 'Mail data naar help@demo.openconext.org',
-=======
-    // Profile
-    'profile_header'                    => 'SURFconext',
-    'profile_subheader'                 => 'Overzicht van jouw SURFconext-profiel.',
-    'profile_header_my_profile'         => 'Mijn Profiel',
-    'profile_header_my_groups'          => 'Mijn Groepen',
-    'profile_header_my_apps'            => 'Mijn Diensten',
-    'profile_header_exit'               => 'Exit',
-    'profile_header_surfteams'          => 'SURFconext Teams',
-    'profile_header_auth_needed'        => 'Authenticatie vereist',
-    'profile_header_leave_surfconext'   => 'Verlaat SURFconext',
-    'profile_store_info'                => 'Van jouw instelling hebben wij de volgende gegevens ontvangen. Deze gegevens worden opgeslagen in (en gebruikt door) SURFconext. Een subset van deze gegevens wordt verstrekt aan diensten die je via SURFconext benadert.',
-
-    'profile_group_membership_desc'     => 'Je bent lid van de volgende groepen.',
-    'profile_no_groups'                 => 'Geen groepen',
-    'profile_extra_groups_desc'         => 'Om jouw instellingsgroepen te zien moet je het gebruik hiervoor binnen SURFconext autoriseren.',
-    'profile_leave_surfconext_desc'     => 'Je gebruikt SURFconext om met je instellingsaccount in te loggen op een of meerdere diensten. Je kan jouw SURFconext profiel verwijderen door op onderstaande knop te drukken.',
-    'profile_leave_surfconext_link'     => 'Verwijder mijn profiel!',
-    'profile_leave_surfconext_disclaim' => 'Let op:
-                                            <ul>
-                                                <li>Alleen de informatie die in SURFconext wordt opgeslagen zal worden verwijderd.</li>
-                                                <li>Diensten waar je met SURFconext op bent ingelogd zullen niet worden ingelicht. Het is dus mogelijk dat jouw persoonlijke gegevens daar nog opgeslagen zijn.</li>
-                                                <li>Na een nieuwe login via SURFconext zal er automatisch weer een profiel worden aangemaakt.</li>
-                                             </ul>
-                                             <br>Meer informatie over welke informatie er wordt opgeslagen door SURFconext kan je vinden op de <a href="https://wiki.surfnet.nl/display/conextsupport/Profile+page" target="_blank">SURFconext supportpagina\'s</a>.',
-    'profile_leave_surfconext_link_add' => '(Sluit je browser na deze actie om de verwijderprocedure te voltooien.)',
-    'profile_revoke_access'             => 'Trek toegang in',
-    'profile_leave_surfconext_conf'     => 'Weet je zeker dat je jouw profiel wilt verwijderen? Je zult de browser moeten afsluiten om deze actie te voltooien',
-    'profile_eula_link'                 => 'Gebruiksvoorwaarden',
-    'profile_support_link'              => 'Help URL',
-    'profile_mail_text'                 => 'SURFconext support kan je vragen om bovenstaande informatie te delen. Deze informatie kan hen helpen om de supportvraag te beantwoorden.',
-    'profile_mail_attributes'           => 'Mail data naar help@surfconext.nl',
->>>>>>> remotes/remote/develop
     'profile_mail_send_success'         => 'De mail met bovenstaande informatie is succesvol verstuurd.',
     'profile_helplink'                  => 'https://wiki.surfnet.nl/display/conextsupport/Profile+page',
 
-<<<<<<< HEAD
     //Profile MyApps
     'profile_apps_connected_aps'        => 'OpenConext Apps',
     'profile_apps_share'                => 'Je hebt toestemming gegeven om profielinformatie te delen met de volgende diensten:',
     'profile_apps_service_th'           => 'Service/Applicatie',
-=======
-    // Profile MyApps
-    'profile_apps_connected_aps'        => 'Mijn diensten via SURFconext',
-    'profile_apps_share'                => 'Je hebt toestemming gegeven om jouw informatie te delen met de volgende diensten:',
-    'profile_apps_service_th'           => 'Dienst/Applicatie',
->>>>>>> remotes/remote/develop
     'profile_apps_eula_th'              => 'EULA',
     'profile_apps_support_name_th'      => 'Support contact',
     'profile_apps_support_url_th'       => 'Support URL',
@@ -235,18 +176,10 @@ Het privacybeleid voor deze dienstverlening is in detail beschreven en na te lez
     'profile_attribute_release'         => 'Aan deze Service Provider worden de volgende attributen vrijgegeven:',
     'profile_attribute_release_all'     => 'Deze dienst ontvangt alle attributen die door jouw instelling worden geleverd.',
 
-<<<<<<< HEAD
     //Delete User
     'deleteuser_success_header'         => 'OpenConext exit procedure',
     'deleteuser_success_subheader'      => 'U bent bijna klaar..',
     'deleteuser_success_desc'           => '<strong>Belangrijk!</strong> Om de exit procedure succesvol af te ronden, moet u nu uw browser afsluiten.',
-=======
-    // Delete User
-    'deleteuser_success_header'         => 'SURFconext exit procedure',
-    'deleteuser_success_subheader'      => 'U bent bijna klaar...',
-    'deleteuser_success_desc'           => '<strong>Belangrijk!</strong> Om de exit procedure succesvol af te ronden, moet je nu de browser afsluiten.',
->>>>>>> remotes/remote/develop
-
 
     // Consent
     'external_link'                     => 'opent in een nieuw venster',
@@ -255,11 +188,7 @@ Het privacybeleid voor deze dienstverlening is in detail beschreven en na te lez
     'consent_intro'                     => '%s verzoekt deze informatie die %s voor jou heeft opgeslagen:',
     'consent_idp_provides'              => 'wilt de volgende informatie vrijgeven:',
     'consent_sp_is_provided'            => 'aan',
-<<<<<<< HEAD
-    'consent_terms_of_service'          => 'Deze informatie zal worden opgeslagen in OpenConext en doorgegeven aan %s. Gebruiksvoorwaarden van %s en %s zijn van toepassing.',
-=======
     'consent_terms_of_service'          => 'Deze informatie zal worden doorgegeven aan %s. Gebruiksvoorwaarden van %s en %s zijn van toepassing.',
->>>>>>> remotes/remote/develop
 
     'consent_accept'                    => 'Ja, deel deze gegevens',
     'consent_decline'                   => 'Nee, ik wil geen gebruik maken van deze dienst',
@@ -275,13 +204,7 @@ Het privacybeleid voor deze dienstverlening is in detail beschreven en na te lez
     'error_404'                         => '404 - Pagina niet gevonden',
     'error_404_desc'                    => 'De pagina is niet gevonden.',
     'error_help_desc'                   => '<p>
-<<<<<<< HEAD
         Bezoek <a href="https://www.openconext.org/documentation">de OpenConext website </a> als dit uw probleem niet oplost.</p>',
-=======
-        Bezoek <a href="https://support.surfconext.nl/">de support pagina</a> als dit je probleem niet oplost.
-        Op deze pagina vind je meer informatie over de mogelijke oorzaken en hoe je contact kan opnemen met het supportteam.
-    </p>',
->>>>>>> remotes/remote/develop
     'error_no_consent'                  => 'Niet mogelijk om verder te gaan naar dienst',
     'error_no_consent_desc'             => 'Deze applicatie kan enkel worden gebruikt wanneer de vermelde informatie wordt gedeeld.<br /><br />
 
@@ -291,13 +214,8 @@ Als je deze applicatie wilt gebruiken moet je:<br />
 <li>jouw informatie delen</li></ul>',
     'error_no_idps'                     => 'Error - Geen instellingen gevonden',
     'error_no_idps_desc'                => '<p>
-<<<<<<< HEAD
         De application die u probeert te benaderen (uw &lsquo;Service Provider&rsquo;) is niet toegankelijk via de OpenConext infrastructuur.
         Ga alstublieft <a href="javascript:history.back();">terug</a> en neem contact op met de beheerders van de dienst.
-=======
-        De dienst die je probeert te benaderen (de &lsquo;Service Provider&rsquo;) is niet toegankelijk via de SURFconext infrastructuur.
-        Ga alstublieft <a href="javascript:history.back();">terug</a> en neem contact op met de helpdesk van SURFconext via <a href="mailto:help@surfconext.nl">help@surfconext.nl</a>.
->>>>>>> remotes/remote/develop
         <br /><br />
     </p>',
     'error_session_lost'                => 'Error - Sessie is verloren gegaan',
@@ -319,11 +237,7 @@ Als je deze applicatie wilt gebruiken moet je:<br />
 
     'error_unknown_issuer'              => 'Error - Onbekende dienst',
     'error_unknown_issuer_desc'     => '<p>
-<<<<<<< HEAD
         Deze applicatie is niet beschikbaar voor OpenConext. Breng alstublieft de aanbieder van deze dienst op de hoogte. Geef hierbij de volgende informatie door:
-=======
-        De dienst waarop je probeert in te loggen is niet bekend bij SURFconext. Mogelijk heeft jouw instelling de toegang tot deze dienst nooit aangevraagd. Neem contact op met de helpdesk van je instelling en geef daarbij de volgende informatie door:
->>>>>>> remotes/remote/develop
     </p>',
     'error_vo_membership_required'      => 'Lidmaatschap van een Virtuele Organisatie vereist',
     'error_vo_membership_required_desc' => 'Je bent succesvol ingelogd bij jouw instelling, maar om gebruik te kunnen maken van deze dienst moet je ook lid zijn van een Virtuele Organisatie.',
@@ -333,7 +247,6 @@ Als je deze applicatie wilt gebruiken moet je:<br />
     </p>',
     'error_missing_required_fields'     => 'Error - Verplichte velden ontbreken',
     'error_missing_required_fields_desc'=> '<p>
-<<<<<<< HEAD
         Uw organisatie geeft niet de benodigde informatie vrij, daarom kunt u deze applicatie niet gebruiken.
     </p>
     <p>
@@ -341,15 +254,6 @@ Als je deze applicatie wilt gebruiken moet je:<br />
     </p>
     <p>
         Omdat uw organisatie niet de juiste attributen aan OpenConext doorgeeft is het inloggen mislukt. De volgende attributen zijn vereist om succesvol in te loggen op het OpenConext platform:
-=======
-        Jouw instelling geeft niet de benodigde informatie vrij. Daarom kun je deze applicatie niet gebruiken.
-    </p>
-    <p>
-        Neem alstublieft contact op met jouw instelling. Geef hierbij de onderstaande informatie door.
-    </p>
-    <p>
-        Omdat je instelling niet de juiste attributen aan SURFconext doorgeeft is het inloggen mislukt. De volgende attributen zijn vereist om succesvol in te loggen op het SURFconext platform:
->>>>>>> remotes/remote/develop
         <ul>
             <li>UID</li>
             <li>schacHomeOrganization</li>
@@ -357,24 +261,19 @@ Als je deze applicatie wilt gebruiken moet je:<br />
     </p>',
     'error_group_oauth'            =>  'Error - Groepautorisatie is mislukt',
     'error_group_oauth_desc'       => '<p>
-<<<<<<< HEAD
         De extere groep provider <b>%s</b> retourneerde een fout.<br />
         Neem contact op met de OpenConext helpdesk via <a href="mailto:help@demo.openconext.org">help@demo.openconext.org</a>.
-=======
-        De extere groepprovider <b>%s</b> retourneerde een fout.<br />
-        Neem contact op met de SURFconext helpdesk via <a href="mailto:help@surfconext.nl">help@surfconext.nl</a>.
->>>>>>> remotes/remote/develop
         <br />
     </p>',
 
     'error_received_error_status_code'     => 'Error - Identity Provider-fout',
     'error_received_error_status_code_desc'=> '<p>
-        Jouw instelling stuurde een authenticatierespons met een foutcode.
+        Jouw organisatie stuurde een authenticatierespons met een foutcode.
     </p>',
     'error_received_invalid_response'        => 'Error - Ongeldig antwoord van identity provider',
     'error_received_invalid_signed_response' => 'Error - Ongeldige handtekening op identity provider-antwoord',
     'error_received_status_code_desc'=> '<p>
-        Jouw instelling stuurde een ongeldig authenticatierespons terug.
+        Jouw organisatie stuurde een ongeldig authenticatierespons terug.
     </p>',
 
     /**
@@ -405,27 +304,15 @@ Als je deze applicatie wilt gebruiken moet je:<br />
 
     'attributes' => 'Attributen',
     'validation' => 'Validatie',
-<<<<<<< HEAD
     'idp_debugging_mail_explain' => 'Indien gevraagd door OpenConext,
                                         gebruik de "Mail naar OpenConext" knop hieronder
                                         om de informatie op dit scherm te e-mailen.',
-    'idp_debugging_mail_button' => 'Mail naar sOpenConext',
+    'idp_debugging_mail_button' => 'Mail naar OpenConext',
 
     // Logout
     'logout_description' => 'Deze applicatie maakt gebruik van centrale login. Hiermee is het mogelijk om met single sign on bij verschillende applicaties in te loggen. Om er 100%% zeker van te zijn dat je uitgelogd bent, moet je de browser helemaal afsluiten.',
     'logout_information_link' => '<a href="http://docs.oasis-open.org/security/saml/Post2.0/sstc-saml-tech-overview-2.0-cd-02.html#5.3.Single Logout Profile|outline">Meer informatie over veilig uitloggen</a>',
-=======
-    'idp_debugging_mail_explain' => 'Indien gevraagd door SURFconext,
-                                        gebruik de "Mail naar SURFconext" knop hieronder
-                                        om de informatie op dit scherm naar SURFconext beheer te e-mailen.',
-    'idp_debugging_mail_button' => 'Mail naar SURFconext',
-
-    // Logout
-    'logout' => 'uitloggen',
-    'logout_description' => 'Deze applicatie maakt gebruik van centrale login. Hiermee is het mogelijk om met single sign on bij verschillende applicaties in te loggen. Om er 100% zeker van te zijn dat je uitgelogd bent, moet je de browser helemaal afsluiten.',
-    'logout_information_link' => '<a href="https://wiki.surfnet.nl/display/conextsupport/Uitloggen+SURFconext">Meer informatie over veilig uitloggen</a>',
 
     // Internal
-    'info_mail_link' => '<a href="support@surfconext.nl">support@surfconext.nl</a>',
->>>>>>> remotes/remote/develop
+    'info_mail_link' => '<a href="mailto:help@demo.openconext.org">help@demo.openconext.org</a>',
 );
