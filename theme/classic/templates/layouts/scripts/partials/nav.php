@@ -8,7 +8,7 @@
     </li>
     <?php if (EngineBlock_View::moduleName() == 'profile'): ?>
         <li data-external-link="true">
-            <a href="https://wiki.surfnet.nl/display/conextsupport/Profile+page" target="_blank">Help</a>
+            <a href="https://github.com/OpenConext/OpenConext-engineblock/wiki/Profile-information" target="_blank">Help</a>
         </li>
     <?php endif; ?>
 </ul>
