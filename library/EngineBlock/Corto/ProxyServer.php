@@ -320,40 +320,37 @@ class EngineBlock_Corto_ProxyServer
         }
 
         $this->startSession();
-        $this->getSessionLog()->info("Started request with parameters: ". var_export(func_get_args(), true));
+        $logger = $this->getSessionLog();
 
-        $this->getSessionLog()->info("Calling service '$serviceName'");
+        if (empty($remoteIdpMd5)) {
+            $logger->info("Calling service '$serviceName'");
+        } else {
+            $logger->info("Calling service '$serviceName' for specific remote IdP '$remoteIdpMd5'");
+        }
+
         $this->getServicesModule()->serve($serviceName);
-        $this->getSessionLog()->info("Done calling service '$serviceName'");
+
+        $logger->info("Done calling service '$serviceName'");
     }
 
     public function setRemoteIdpMd5($remoteIdPMd5)
     {
-        $remoteEntityIds = array_keys($this->_entities['remote']);
+        $idpEntityIds = $this->_repository->findAllIdentityProviderEntityIds();
 
-        foreach ($remoteEntityIds as $remoteEntityId) {
-            if (md5($remoteEntityId) === $remoteIdPMd5) {
-                $this->_configs['Idp'] = $remoteEntityId;
-                $this->_configs['TransparentProxy'] = true;
-                $this->getSessionLog()->info("Detected pre-selection of $remoteEntityId as IdP, switching to transparant mode");
-                break;
+        foreach ($idpEntityIds as $idpEntityId) {
+            if (md5($idpEntityId) !== $remoteIdPMd5) {
+                continue;
             }
-        }
-        // Patch Migration BACKLOG-915 Begin
-        foreach ($remoteEntityIds as $remoteEntityId) {
-            if (substr($remoteEntityId, -8) == "/migrate") {
 
-                if (md5(substr($remoteEntityId, 0, -8)) === $remoteIdPMd5) {
-                    $this->_configs['Idp'] = $remoteEntityId;
-                    $this->_configs['TransparentProxy'] = true;
-                    $this->getSessionLog()->info("Re detected pre-selection of $remoteEntityId as IdP, switching to IdP EntityID with Alias");
-                    break;
-                }
-            }
+            $this->_configs['Idp'] = $idpEntityId;
+            $this->_configs['TransparentProxy'] = true;
+            $this->getSessionLog()->info(
+                "Detected pre-selection of $idpEntityId as IdP, switching to transparent mode"
+            );
+            break;
         }
-        // Patch Migration BACKLOG-915 End
         if (!isset($this->_configs['Idp'])) {
-            $this->getSessionLog()->warn("Unable to map remote IdpMD5 '$remoteIdPMd5' to a remote entity!");
+            $this->getSessionLog()->warning("Unable to map remote IdpMD5 '$remoteIdPMd5' to a remote entity!");
         }
 
         return $this;
@@ -526,14 +523,14 @@ class EngineBlock_Corto_ProxyServer
         if ($keyId = $request->getKeyId()) {
             $this->setKeyId($keyId);
         }
-        $requestWasUnsollicited = $request->isUnsolicited();
+        $requestWasUnsolicited = $request->isUnsolicited();
 
         $response = new SAML2_Response();
         /** @var SAML2_AuthnRequest $request */
         $response->setRelayState($request->getRelayState());
         $response->setId($this->getNewId(IdFrame::ID_USAGE_SAML2_RESPONSE));
         $response->setIssueInstant(time());
-        if (!$requestWasUnsollicited) {
+        if (!$requestWasUnsolicited) {
             $response->setInResponseTo($request->getId());
         }
         $response->setDestination($request->getIssuer());
@@ -586,8 +583,10 @@ class EngineBlock_Corto_ProxyServer
             }
         }
 
-        $this->getSystemLog()
-            ->attach($serviceProvider->assertionConsumerServices, 'AssertionConsumerServices');
+        $this->getSystemLog()->error(
+            'No supported binding found for ACS',
+            array('acs' => $serviceProvider->assertionConsumerServices)
+        );
 
         throw new EngineBlock_Corto_ProxyServer_Exception('No supported binding found for ACS');
     }
@@ -596,8 +595,9 @@ class EngineBlock_Corto_ProxyServer
      * Returns a custom ACS location from request or false when
      * none is specified
      *
-     * @param array $request
-     * @param array $serviceProvider
+     * @param EngineBlock_Saml2_AuthnRequestAnnotationDecorator $request
+     * @param ServiceProvider $serviceProvider
+     * @return null|\OpenConext\Component\EngineBlockMetadata\IndexedService
      */
     public function getCustomAssertionConsumer(
         EngineBlock_Saml2_AuthnRequestAnnotationDecorator $request,
@@ -730,7 +730,7 @@ class EngineBlock_Corto_ProxyServer
         $requestId = $response->getInResponseTo();
         if (!$requestId) {
             throw new EngineBlock_Corto_ProxyServer_Exception(
-                'Response without InResponseTo, e.g. unsollicited. We don\'t support this.',
+                'Response without InResponseTo, e.g. unsolicited. We don\'t support this.',
                 EngineBlock_Exception::CODE_NOTICE
             );
         }
@@ -1031,7 +1031,7 @@ class EngineBlock_Corto_ProxyServer
     }
 
     /**
-     * @return EngineBlock_Log
+     * @return Psr\Log\LoggerInterface
      */
     public function getSystemLog()
     {
@@ -1057,7 +1057,7 @@ class EngineBlock_Corto_ProxyServer
         return $this->_sessionLog;
     }
 
-    public function setSystemLog(EngineBlock_Log $log)
+    public function setSystemLog(Psr\Log\LoggerInterface $log)
     {
         $this->_systemLog = $log;
     }
